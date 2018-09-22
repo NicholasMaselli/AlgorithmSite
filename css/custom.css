@@ -1,0 +1,38 @@
+body {
+   padding-top: 56px;
+}
+
+code {
+  font-size: 87.5%;
+  //color: #007bff;
+  word-break: break-word;
+}
+
+pre {
+  overflow: auto;
+  background-color: #E9ECEF; //#F0F1F0; //#FCFDFC;
+  background-repeat: repeat-y;
+  background-position: 0 -1rem;
+  background-size: auto 4rem;
+}
+
+pre, code {
+  font-family: monospace, monospace;
+  font-size: 87.5%;
+  color: #007bff;
+  word-break: break-word;
+}
+
+pre > code {
+  display: block;
+  padding: 1rem;
+  word-wrap: normal;
+}
+
+.section {
+	
+	border-style: solid;
+	border-width: 3px;
+	border-color: #E9ECEF
+
+}

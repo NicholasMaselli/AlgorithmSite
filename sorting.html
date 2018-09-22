@@ -93,7 +93,7 @@
         <div id="page-content-wrapper">
             <div class="container-fluid">
                 <div class="jumbotron text-center">
-					<h1 class="display-2"><b>Algorithm Site</b></h1>
+					<h1 class="display-2"><b>Sorting</b></h1>
 					<p>
 					This page will go over QuickSort and MergeSort, two popular sorting algorithms used in modern applications
 					</p>
@@ -110,7 +110,7 @@
 			  </div>
 			  <div class="row">
 				<div class="col-lg-12">
-					  <figure >
+					  <figure>
 					  <figcaption>QuickSort Using C#</figcaption>
 						<pre class="text-left"><code class="language-clike" contenteditable spellcheck="false">using System;
 
@@ -118,8 +118,62 @@ namespace Algorithms
 {
     public class QuickSort
     {
+		/*QuickSort is an O(NLog(N)) divide and conquer sorting algorithm that performs and average of Log(N)
+		steps of its partition function which is O(N). Need in place and stable here*/		
+		public static void QuickSort(int[] array) {
+			int low = 0;
+			int high = array.Length - 1;
+			QuickSort(array, low, high);
+		}
+		
+		private static void QuickSort(int[] array, int low, int high) {
+			if (low < high) {
+				int pivot = partition(array, low, high);				
+				QuickSort(array, low, pivot-1);
+				QuickSort(array, pivot, high);
+			}
+		}
+		
+		/*Key will be the high value for this partition function. Partition is a
+		1 pass linear O(N) time algorithm*/
+		private static int partition(int[] array, int low, int high) {
+		
+			//Ensure low and high are within bounds
+			/*
+			if (low < 0 || high >= array.Length) {
+				return 0;
+			}
+			*/
+			
+			int temp;
+			int pivot = high;
+			while (low <= pivot) {
+				
+				//Increment low if the low index value is greater than the pivot index value
+				//It is already correctly partitioned. Swap and decrement the pivot otherwise.
+				if (array[low] <= array[pivot]) {
+					low++;
+				}
+				else {
+					temp = array[low];
+					array[low] = array[pivot];
+					array[pivot] = temp;
+					
+					pivot--;
+				}				
+			}
+			
+			return pivot;
+		}
+	
+		public static void Main(string[] args) {			
+			int[] sort = {2, 5, 8, 3, 8, 34, 4, 45, 6, 45, 23, 45, 6,23 4, 2, 2, 44};
+			QuickSort(sort);
+		}
     }
-}</code></pre>
+}
+
+</code></pre>
 					  </figure>
 				</div>
 			  </div>
@@ -139,13 +193,80 @@ namespace Algorithms
 				<div class="col-lg-12">
 					  <figure >
 					  <figcaption>MergeSort Using C#</figcaption>
-						<pre class="text-left"><code class="language-clike" contenteditable spellcheck="false">using System;
+						<pre class="text-left"><code class="language-clike" contenteditable spellcheck="false">using system;
 
 namespace Algorithms
 {
-    public class MergeSort
-    {
-    }
+	public class MergeSort
+	{
+		public static void MergeSort(int[] array) {
+			int low = 0;
+			int high = array.Length - 1;
+						
+			MergeSort(array, low, high, middle);
+		}
+		
+		private static void MergeSort(int array[], int low, int high){
+			if (low < high) {
+				int middle = low + (high-low)/2;
+				
+				MergeSort(array, low, middle);
+				MergeSort(array, middle + 1, high);
+				
+				merge(array, low, high, middle);
+			}			
+		}
+		
+		private static void merge(int[] array, int low, int high, int middle) {
+			int leftSize = middle - low + 1;
+			int rightSize = high - middle;
+			
+			int[] leftArray = new int[leftSize];
+			int[] rightArray = new int[rightSize];
+			
+			//Place data in these temporary array
+			for (int i = 0; i < leftSize; i++) {
+				leftArray[i] = array[low + i];
+			}
+			
+			for (int j = 0; j < rightSize; j++) {
+				rightArray[j] = array[middle + 1 + j];
+			}
+			
+			int i = 0;
+			int j = 0;
+			
+			int k = low;
+			while (i < leftSize && j < rightSize) {
+				if (leftArray[i] <= rightArray[j]) {
+					array[k] = leftArray[i];
+					i++;
+				}
+				else {
+					array[k] = rightArray[j];
+					j++
+				}
+				k++;
+			}
+			
+			//Add the remaining elements to the input array
+			while(i < leftSize) {
+				array[k] = leftArray[i];
+				i++;
+				k++;
+			}
+			
+			while(j < rightSize) {
+				array[k] = rightArray[j];
+				j++;
+				k++;
+			}			
+		}
+	
+		public static void Main(string[] args) {
+			
+		}
+	}
 }</code></pre>
 					  </figure>
 				</div>
@@ -161,10 +282,10 @@ namespace Algorithms
     <!-- Bootstrap core JavaScript -->
     <script src="jquery/jquery.min.js"></script>
     <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
-	
+
 	<!-- Prism Javascript -->
 	<script src="prism/prism.js"></script>
-
+	
   </body>
 
 </html>
