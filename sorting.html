@@ -29,25 +29,20 @@
     <!-- Navigation -->
     <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark static-top">
       <div class="container">
-        <a class="navbar-brand" href="#">Start Bootstrap</a>
+        <a class="navbar-brand" href="index.html">Algorithm Site</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="index.html">Home
-                <span class="sr-only">(current)</span>
-              </a>
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">About</a>
+              <a class="nav-link" href="about.html">About</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Services</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Contact</a>
+              <a class="nav-link" href="contact.html">Contact</a>
             </li>
           </ul>
         </div>
@@ -59,31 +54,26 @@
         <!-- Sidebar -->
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
-                <li class="sidebar-brand">
-                    <a href="#">
-                        Start Bootstrap
-                    </a>
-                </li>
                 <li>
                     <a href="sorting.html">Sorting</a>
                 </li>
                 <li>
-                    <a href="#">Shortcuts</a>
+                    <a href="hashtables.html">Hash Tables</a>
                 </li>
                 <li>
-                    <a href="#">Overview</a>
+                    <a href="trees.html">Trees</a>
                 </li>
                 <li>
-                    <a href="#">Events</a>
+                    <a href="graphs.html">Graphs</a>
                 </li>
                 <li>
-                    <a href="#">About</a>
+                    <a href="other.html">Other Algorithms</a>
                 </li>
                 <li>
-                    <a href="#">Services</a>
+                    <a href="mathematics.html">Mathematics</a>
                 </li>
                 <li>
-                    <a href="#">Contact</a>
+                    <a href="operatingsystems.html">Operating Systems</a>
                 </li>
             </ul>
         </div>
@@ -105,74 +95,101 @@
 			  <div class="row">
 				<div class="col-lg-12">
 				  <h1>QuickSort</h1>
-				  <p class="lead">Describe the QuickSort algorithm here</p>
+				  <p class="lead">The Quicksort algorithm is an O(NLog(N)), in place, and not stable sorting algorithm with its default implementation. QuickSort partitions an array or list into 2 sections
+				  and correctly places a pivot in the sorted array. The partition is a O(n) algorithm which is recursively called on the left partition and the right partition. This equates to log n times 
+				  calls on average in QuickSort's default implementation. 
+				  </p>
 				</div>
 			  </div>
 			  <div class="row">
 				<div class="col-lg-12">
 					  <figure>
 					  <figcaption>QuickSort Using C#</figcaption>
-						<pre class="text-left"><code class="language-clike" contenteditable spellcheck="false">using System;
+						<pre class="text-left code-scroll"><code class="language-clike" contenteditable spellcheck="false">using System;
 
 namespace Algorithms
 {
     public class QuickSort
     {
-		/*QuickSort is an O(NLog(N)) divide and conquer sorting algorithm that performs and average of Log(N)
-		steps of its partition function which is O(N). Need in place and stable here*/		
-		public static void QuickSort(int[] array) {
-			int low = 0;
-			int high = array.Length - 1;
-			QuickSort(array, low, high);
-		}
-		
-		private static void QuickSort(int[] array, int low, int high) {
-			if (low < high) {
-				int pivot = partition(array, low, high);				
-				QuickSort(array, low, pivot-1);
-				QuickSort(array, pivot, high);
-			}
-		}
-		
-		/*Key will be the high value for this partition function. Partition is a
-		1 pass linear O(N) time algorithm*/
-		private static int partition(int[] array, int low, int high) {
-		
-			//Ensure low and high are within bounds
-			/*
-			if (low < 0 || high >= array.Length) {
-				return 0;
-			}
-			*/
-			
-			int temp;
-			int pivot = high;
-			while (low <= pivot) {
-				
-				//Increment low if the low index value is greater than the pivot index value
-				//It is already correctly partitioned. Swap and decrement the pivot otherwise.
-				if (array[low] <= array[pivot]) {
-					low++;
-				}
-				else {
-					temp = array[low];
-					array[low] = array[pivot];
-					array[pivot] = temp;
-					
-					pivot--;
-				}				
-			}
-			
-			return pivot;
-		}
-	
-		public static void Main(string[] args) {			
-			int[] sort = {2, 5, 8, 3, 8, 34, 4, 45, 6, 45, 23, 45, 6,23 4, 2, 2, 44};
-			QuickSort(sort);
-		}
+        /*QuickSort is an O(NLog(N)) divide and conquer sorting algorithm that performs and average of Log(N)
+		steps of its partition function which is O(N).
+        public static void quicksort(int[] array)
+        {
+            int low = 0;
+            int high = array.Length - 1;
+            quicksort(array, low, high);
+        }
+
+        private static void quicksort(int[] array, int low, int high)
+        {
+            if (low < high)
+            {
+                int pivotIndex = partition(array, low, high);
+                quicksort(array, low, pivotIndex - 1);
+                quicksort(array, pivotIndex, high);
+            }
+        }
+
+        //Key will be the high value for this partition function. Partition is a linear O(N) time algorithm
+        private static int partition(int[] array, int low, int high)
+        {
+            int left = low;
+            int right = high;
+            int temp;
+
+            //Start by choosing the pivot to be the last value in the array and decrement the right pointer
+            int pivot = array[right];
+            right--;
+
+            while (left <= right)
+            {
+
+                //Increment low if the low index value is greater than the pivot index value
+                //It is already correctly partitioned. Swap and decrement the pivot otherwise.
+                if (array[left] <= pivot)
+                {
+                    left++;
+                }
+                else
+                {
+                    temp = array[left];
+                    array[left] = array[right];
+                    array[right] = temp;
+
+                    right--;
+                }
+            }
+
+            //Swap pivot to the right + 1 index at the end of the loop
+            temp = array[right + 1];
+            array[right + 1] = array[high];
+            array[high] = temp;
+
+            return right + 1;
+        }
+
+        public static void printArray(int[] array)
+        {
+            Console.Write("[");
+            for (int i = 0; i < array.Length - 1; i++)
+            {
+                Console.Write(array[i] + ", ");
+            }
+            Console.Write(array[array.Length - 1]);
+            Console.Write("]");
+
+            //Console.Read() holds console open until closed
+            Console.Read();
+        }
+
+        public static void Main(string[] args)
+        {
+            int[] sort = { 2, 5, 8, 3, 8, 34, 4, 45, 6, 45, 23, 45, 6, 23, 4, 2, 2, 44 };
+            quicksort(sort);
+            printArray(sort);
+        }
     }
 }
-
 </code></pre>
 					  </figure>
 				</div>
@@ -186,87 +203,119 @@ namespace Algorithms
 			  <div class="row">
 				<div class="col-lg-12">
 				  <h1>MergeSort</h1>
-				  <p class="lead">Describe the MergeSort algorithm here</p>
+				  <p class="lead">The MergeSort algorithm is an O(NLog(N)), not in place, stable sorting algorithm with its default implementation. MergeSort recursively sorts a list by dividing the array up into
+				  smaller and smaller chunks and using a O(N) merge algorithm to join them back together in sorted order. This requires O(N) extra space its MergeSort's default implementation which means the algorithm
+				  is not in place.
+				  </p>
 				</div>
 			  </div>
 			  <div class="row">
 				<div class="col-lg-12">
-					  <figure >
+					  <figure>
 					  <figcaption>MergeSort Using C#</figcaption>
-						<pre class="text-left"><code class="language-clike" contenteditable spellcheck="false">using system;
+						<pre class="text-left code-scroll"><code class="language-clike" contenteditable spellcheck="false">using System;
 
 namespace Algorithms
 {
-	public class MergeSort
-	{
-		public static void MergeSort(int[] array) {
-			int low = 0;
-			int high = array.Length - 1;
-						
-			MergeSort(array, low, high, middle);
-		}
-		
-		private static void MergeSort(int array[], int low, int high){
-			if (low < high) {
-				int middle = low + (high-low)/2;
-				
-				MergeSort(array, low, middle);
-				MergeSort(array, middle + 1, high);
-				
-				merge(array, low, high, middle);
-			}			
-		}
-		
-		private static void merge(int[] array, int low, int high, int middle) {
-			int leftSize = middle - low + 1;
-			int rightSize = high - middle;
-			
-			int[] leftArray = new int[leftSize];
-			int[] rightArray = new int[rightSize];
-			
-			//Place data in these temporary array
-			for (int i = 0; i < leftSize; i++) {
-				leftArray[i] = array[low + i];
-			}
-			
-			for (int j = 0; j < rightSize; j++) {
-				rightArray[j] = array[middle + 1 + j];
-			}
-			
-			int i = 0;
-			int j = 0;
-			
-			int k = low;
-			while (i < leftSize && j < rightSize) {
-				if (leftArray[i] <= rightArray[j]) {
-					array[k] = leftArray[i];
-					i++;
-				}
-				else {
-					array[k] = rightArray[j];
-					j++
-				}
-				k++;
-			}
-			
-			//Add the remaining elements to the input array
-			while(i < leftSize) {
-				array[k] = leftArray[i];
-				i++;
-				k++;
-			}
-			
-			while(j < rightSize) {
-				array[k] = rightArray[j];
-				j++;
-				k++;
-			}			
-		}
-	
-		public static void Main(string[] args) {
-			
-		}
-	}
+    public class MergeSort
+    {
+        public static void mergesort(int[] array)
+        {
+            int low = 0;
+            int high = array.Length - 1;
+
+            mergesort(array, low, high);
+        }
+
+		//MergeSort recursively divides the array into 2 sides and merges them together recursively at the end.
+        private static void mergesort(int[] array, int low, int high)
+        {
+            if (low < high)
+            {
+                int middle = low + (high - low) / 2;
+
+                mergesort(array, low, middle);
+                mergesort(array, middle + 1, high);
+
+                merge(array, low, high, middle);
+            }
+        }
+
+        private static void merge(int[] array, int low, int high, int middle)
+        {
+            int leftSize = middle - low + 1;
+            int rightSize = high - middle;
+
+            int[] leftArray = new int[leftSize];
+            int[] rightArray = new int[rightSize];
+
+            //Place data in these temporary arrays
+            for (int index = 0; index < leftSize; index++)
+            {
+                leftArray[index] = array[low + index];
+            }
+
+            for (int index = 0; index < rightSize; index++)
+            {
+                rightArray[index] = array[middle + 1 + index];
+            }
+
+            int i = 0;
+            int j = 0;
+
+            int k = low;
+            while (i < leftSize && j < rightSize)
+            {
+                if (leftArray[i] <= rightArray[j])
+                {
+                    array[k] = leftArray[i];
+                    i++;
+                }
+                else
+                {
+                    array[k] = rightArray[j];
+                    j++;
+                }
+                k++;
+            }
+
+            //Add the remaining elements to the input array
+            while (i < leftSize)
+            {
+                array[k] = leftArray[i];
+                i++;
+                k++;
+            }
+
+            while (j < rightSize)
+            {
+                array[k] = rightArray[j];
+                j++;
+                k++;
+            }
+        }
+
+        public static void printArray(int[] array)
+        {
+            Console.Write("[");
+            for (int i = 0; i < array.Length - 1; i++)
+            {
+                Console.Write(array[i] + ", ");
+            }
+            Console.Write(array[array.Length - 1]);
+            Console.Write("]");
+
+            //Console.Read() holds console open until closed
+            Console.Read();
+        }
+        
+        public static void Main(string[] args)
+        {
+            int[] sort = { 2, 5, 8, 3, 8, 34, 4, 45, 6, 45, 23, 45, 6, 23, 4, 2, 2, 44 };
+            mergesort(sort);
+            printArray(sort);
+        }
+    }
 }</code></pre>
 					  </figure>
 				</div>

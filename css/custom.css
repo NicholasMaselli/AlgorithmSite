@@ -36,3 +36,8 @@ pre > code {
 	border-color: #E9ECEF
 
 }
+
+.code-scroll {
+	height: 600px;
+	overflow-y: scroll;	
+}
