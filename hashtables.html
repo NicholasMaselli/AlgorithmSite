@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Bare - Start Bootstrap Template</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	
+	<!-- Custom styles for this template -->
+    <link href="css/simple-sidebar.css" rel="stylesheet">
+	
+	<!-- Prism Code Stylesheet -->
+	<link href="prism/prism.css" rel="stylesheet" />
+	
+	<!-- Custom styles -->
+    <link href="css/custom.css" rel="stylesheet">
+
+  </head>
+
+  <body>
+
+    <!-- Navigation -->
+    <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark static-top">
+      <div class="container">
+        <a class="navbar-brand" href="index.html">Algorithm Site</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="about.html">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="contact.html">Contact</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+	
+	<div id="wrapper" class="toggled">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li>
+                    <a href="sorting.html">Sorting</a>
+                </li>
+                <li>
+                    <a href="hashtables.html">Hash Tables</a>
+                </li>
+                <li>
+                    <a href="trees.html">Trees</a>
+                </li>
+                <li>
+                    <a href="graphs.html">Graphs</a>
+                </li>
+                <li>
+                    <a href="other.html">Other Algorithms</a>
+                </li>
+                <li>
+                    <a href="mathematics.html">Mathematics</a>
+                </li>
+                <li>
+                    <a href="operatingsystems.html">Operating Systems</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="jumbotron text-center">
+					<h1 class="display-2"><b>Hash Tables</b></h1>
+					<p>
+					This page will go over Hash Tables, an extremely important constant time O(1) lookup data structure
+					</p>
+				</div>
+            </div>        
+		
+			<!-- More Page Content -->
+			<div class="container-fluid section">
+			  <div class="row">
+				<div class="col-lg-12">
+				  <h1>HashTable Using Open Addressing Linear Probing</h1>
+				  <p class="lead">The HashTable data structure allows the user to insert key, value pairs for constant time lookup. Similar to array but the indicies are keys that can
+				  be any object. The HashTable calls a hash function using the key as a parameter which obtains an integer corresponding to properties of the object. This output of the
+				  hash function is used as an index for an internal array to hold value object. There are two types of HashTables: Separate Chaining and Open Addressing which have to 
+				  do with how the HashTable handles collisions. A collision is when a hash function for 2 different objects outputs to the same value. A Separate Chain HashTable
+				  used a linked list at the index to handle these issues while an Open Addressing HashTable incremenets the index until it finds an open spot in the internal array.
+				  The implementation of a HashTable below is a HashTable using Open Addressing with Linear Probing which means the index is incremented by 1 if the current index in
+				  the internal array is occupied. Linear probing can cause clustering which is a situation where keys are grouped closely together which can hurt the constant time performance.
+				  Quadratic probing and double hashing can be used as well which solve the clustering problem but have issues of their own such as ensuring every address in the interal array
+				  can be reached and computation time for the double hashing technique.
+				  </p>
+				</div>
+			  </div>
+			  <div class="row">
+				<div class="col-lg-12">
+					  <figure>
+					  <figcaption>HashTable Using Open Addressing Linear Probing In C#</figcaption>
+						<pre class="text-left code-scroll"><code class="language-clike" contenteditable spellcheck="false">using System;
+    
+//Where clause ensure the generic values are classes and enables the == operator
+class HashTable<TKey, TValue>
+{
+
+    //Potential improvements: Use prime array to allow uniform distribution of keys even after Grow() Shrink() function, 
+    //this will also potentially eliminate the problem where you only get 1.6 Billion array slots until overflow
+    private int _initialSize = 101;
+    private int _scaleFactor = 2;
+
+    //Size Values
+    private int _size = 101;
+    private int _keyCount = 0;
+        
+    //Data Arrays
+    private TKey[] _keyArray;
+    private TValue[] _valueArray;
+    private bool[] _occupiedArray;
+
+    public HashTable()
+    {
+        _keyArray = new TKey[_size];
+        _valueArray = new TValue[_size];
+
+        //Use occupied array instead of a null check to handle non-nullable types
+        _occupiedArray = new bool[_size];
+    }
+
+    public void Add(TKey key, TValue value)
+    {
+
+        //Grow HashTable if the array is full
+        if (_size == _keyCount) 
+        {
+            if (_size < (int.MaxValue / 2) + 1)
+            {
+                Grow();
+            }
+            else
+            {
+                throw new Exception("Cannot add key to HashTable. HashTable is full");
+            }
+        }
+
+        AddPair(key, value);
+    }
+
+    //Private helper function to add key, value pairs
+    private void AddPair(TKey key, TValue value)
+    {
+        int hash = Math.Abs(key.GetHashCode()) % _size;
+        for (int i = 0; i < _size; i++)
+        {
+            if (_occupiedArray[hash] == false)
+            {
+                _keyArray[hash] = key;
+                _valueArray[hash] = value;
+                _occupiedArray[hash] = true;
+                _keyCount++;
+                return;
+            }
+            else if (_occupiedArray[hash] && _keyArray[hash].Equals(key))
+            {
+                throw new Exception("An Item with the same key has already been added to the HashTable.");
+            }
+
+            //Increment the hash value
+            hash = (hash + 1) % _size;
+        }
+
+        throw new Exception("Error Adding Key, Value to HashTable");
+    }
+        
+    public bool Remove(TKey key)
+    {
+
+        //Shrink HashTable if the array is 1/4 full and not below initialSize
+        if (_keyCount <= (int)_size / 4 && _size > _initialSize)
+        {
+            Shrink();
+        }
+
+        bool removed = false;
+        int hash = Math.Abs(key.GetHashCode()) % _size;
+        for (int i = 0; i < _size; i++)
+        {
+            if (_occupiedArray[hash] && _keyArray[hash].Equals(key))
+            {
+                _keyArray[hash] = default(TKey);
+                _valueArray[hash] = default(TValue);
+                _occupiedArray[hash] = false;
+                _keyCount--;
+
+                removed = true;
+                break;
+            }
+
+            //Increment the hash value
+            hash = (hash + 1) % _size;
+        }
+
+        if (removed)
+        {                
+            int previousHash;
+
+            //Loop through cluster and fill in the null holes
+            for (int i = 0; i < _size; i++)
+            {
+                //Increment the hash value
+                previousHash = hash;
+                hash = (hash + 1) % _size;
+
+                /*If the array at this hash value is occupied, determined whether the key is occupying the index because 
+                  it's hash code matches the index or if the hash had traversed due to linear probing traversal. 
+                  If the code does not match, swap with the new empty hash index*/
+                if (_occupiedArray[hash] && hash != Math.Abs(_keyArray[hash].GetHashCode()) % _size) //Must ensure you use absolute value or there will be bugs!
+                {
+                    _keyArray[previousHash] = _keyArray[hash];
+                    _valueArray[previousHash] = _valueArray[hash];
+                    _occupiedArray[previousHash] = true;
+
+                    _keyArray[hash] = default(TKey);
+                    _valueArray[hash] = default(TValue);
+                    _occupiedArray[hash] = false;
+                }
+                else
+                {
+                    return removed;
+                }
+            }
+        }
+
+        return removed;
+    }  
+
+    public TValue Get(TKey key)
+    {
+        int hash = Math.Abs(key.GetHashCode()) % _size;
+        for (int i = 0; i < _size; i++)
+        {
+            if (_occupiedArray[hash] && _keyArray[hash].Equals(key))
+            {
+                return _valueArray[hash];
+            }
+            else if (_occupiedArray[hash] == false)
+            {
+                throw new Exception("The given key is not present in the HashTable.");
+            }
+        }
+        throw new Exception("The given key is not present in the HashTable.");
+    }
+
+    //Increase the size of the HashTable
+    private void Grow()
+    {
+        int previousSize = _size;
+        _size *= _scaleFactor;
+
+        ReHashKeys();
+    }
+        
+    //Decrease the size of the HashTable        
+    private void Shrink()
+    {
+        int previousSize = _size;
+        _size = (int)_size / 2;
+
+        ReHashKeys();
+    }
+
+    private void ReHashKeys()
+    {
+        TKey[] oldKeyArray = _keyArray;
+        TValue[] oldValueArray = _valueArray;
+        bool[] oldOccupiedArray = _occupiedArray;
+
+        //Replace previous data arrays with new arrays of increased size
+        _keyArray = new TKey[_size];
+        _valueArray = new TValue[_size];
+        _occupiedArray = new bool[_size];
+        _keyCount = 0;
+
+        //For each element in the old arrays, add the keys, values, and booleans to the new arrays
+        for (int i = 0; i < oldKeyArray.Length; i++)
+        {
+            if (oldOccupiedArray[i])
+            {
+                AddPair(oldKeyArray[i], oldValueArray[i]);
+            }
+        }
+    }
+
+    public void printHashTable()
+    {
+        Console.Write("[");
+        for (int i = 0; i < _valueArray.Length - 1; i++)
+        {
+            Console.Write(_valueArray[i] + ", ");
+        }
+        Console.Write(_valueArray[_valueArray.Length - 1]);
+        Console.Write("]");
+    }
+}
+</code></pre></figure>
+				</div>
+			  </div>
+			</div>
+		</div>
+        <!-- /#page-content-wrapper -->
+
+	</div>	
+	<!-- /#wrapper -->	
+		
+    <!-- Bootstrap core JavaScript -->
+    <script src="jquery/jquery.min.js"></script>
+    <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+
+	<!-- Prism Javascript -->
+	<script src="prism/prism.js"></script>
+	
+  </body>
+
+</html>

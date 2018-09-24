@@ -36,6 +36,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HashTable.cs" />
     <Compile Include="MergeSort.cs" />
     <Compile Include="QuickSort.cs" />
   </ItemGroup>
