@@ -120,12 +120,15 @@ public class GraphMatrix
         }
     }
 
-    public int[] getAdjVertices(int src)
+    public List<int> getAdjVertices(int src)
     {
-        int[] adj = new int[_size];
+        List<int> adj = new List<int>();
         for (int i = 0; i < _size; i++)
         {
-            adj[i] = _matrix[src, i];
+            if (_matrix[src, i] != 0)
+            {
+                adj.Add(i);
+            }
         }
         return adj;
     }
@@ -148,8 +151,8 @@ public class GraphMatrix
     public void printVertices(int fromVertex)
     {
         Console.Write("[");
-        int[] vertices = getAdjVertices(fromVertex);
-        for (int i = 0; i < vertices.Length; i++)
+        List<int> vertices = getAdjVertices(fromVertex);
+        for (int i = 0; i < vertices.Count; i++)
         {
             Console.Write(vertices[i] + ", ");
         }

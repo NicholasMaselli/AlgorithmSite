@@ -114,7 +114,7 @@
 						<pre class="text-left code-scroll"><code class="language-clike" contenteditable spellcheck="false">using System;
     
 //Where clause ensure the generic values are classes and enables the == operator
-public class HashTable<TKey, TValue>
+public class HashTable&ltTKey, TValue&gt
 {
 
     //Potential improvements: Use prime array to allow uniform distribution of keys even after Grow() Shrink() function, 
@@ -146,7 +146,7 @@ public class HashTable<TKey, TValue>
         //Grow HashTable if the array is full
         if (_size == _keyCount) 
         {
-            if (_size < (int.MaxValue / 2) + 1)
+            if (_size &lt (int.MaxValue / 2) + 1)
             {
                 Grow();
             }
@@ -163,7 +163,7 @@ public class HashTable<TKey, TValue>
     private void AddPair(TKey key, TValue value)
     {
         int hash = Math.Abs(key.GetHashCode()) % _size;
-        for (int i = 0; i < _size; i++)
+        for (int i = 0; i &lt _size; i++)
         {
             if (_occupiedArray[hash] == false)
             {
@@ -189,14 +189,14 @@ public class HashTable<TKey, TValue>
     {
 
         //Shrink HashTable if the array is 1/4 full and not below initialSize
-        if (_keyCount <= (int)_size / 4 && _size > _initialSize)
+        if (_keyCount &lt= (int)_size / 4 && _size &gt _initialSize)
         {
             Shrink();
         }
 
         bool removed = false;
         int hash = Math.Abs(key.GetHashCode()) % _size;
-        for (int i = 0; i < _size; i++)
+        for (int i = 0; i &lt _size; i++)
         {
             if (_occupiedArray[hash] && _keyArray[hash].Equals(key))
             {
@@ -218,7 +218,7 @@ public class HashTable<TKey, TValue>
             int previousHash;
 
             //Loop through cluster and fill in the null holes
-            for (int i = 0; i < _size; i++)
+            for (int i = 0; i &lt _size; i++)
             {
                 //Increment the hash value
                 previousHash = hash;
@@ -250,7 +250,7 @@ public class HashTable<TKey, TValue>
     public TValue Get(TKey key)
     {
         int hash = Math.Abs(key.GetHashCode()) % _size;
-        for (int i = 0; i < _size; i++)
+        for (int i = 0; i &lt _size; i++)
         {
             if (_occupiedArray[hash] && _keyArray[hash].Equals(key))
             {
@@ -295,7 +295,7 @@ public class HashTable<TKey, TValue>
         _keyCount = 0;
 
         //For each element in the old arrays, add the keys, values, and booleans to the new arrays
-        for (int i = 0; i < oldKeyArray.Length; i++)
+        for (int i = 0; i &lt oldKeyArray.Length; i++)
         {
             if (oldOccupiedArray[i])
             {
@@ -307,7 +307,7 @@ public class HashTable<TKey, TValue>
     public void printHashTable()
     {
         Console.Write("[");
-        for (int i = 0; i < _valueArray.Length - 1; i++)
+        for (int i = 0; i &lt _valueArray.Length - 1; i++)
         {
             Console.Write(_valueArray[i] + ", ");
         }

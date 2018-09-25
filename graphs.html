@@ -121,6 +121,7 @@
 					  <figure>
 					  <figcaption>Matrix Graph Representation Using C#</figcaption>
 						<pre class="text-left code-scroll"><code class="language-clike" contenteditable spellcheck="false">using System;
+using System.Collections.Generic;
 
 //The GraphMatrix class uses a 2 dimensional array named _matrix. The value _matrix[i,j] is the value of the edge from vertex i to vertex j
 public class GraphMatrix
@@ -141,9 +142,9 @@ public class GraphMatrix
     {
         int newSize = _size + number;
         int[,] newMatrix = new int[newSize, newSize];
-        for (int i = 0; i < _size; i++)
+        for (int i = 0; i &lt _size; i++)
         {
-            for (int j = 0; j < _size; j++)
+            for (int j = 0; j &lt _size; j++)
             {
                 newMatrix[i, j] = _matrix[i, j];
             }
@@ -174,14 +175,43 @@ public class GraphMatrix
         }
     }
 
-    public int[] getAdjVertices(int src)
+    public List&ltint&gt getAdjVertices(int src)
     {
-        int[] adj = new int[_size];
-        for (int i = 0; i < _size; i++)
+        List&ltin&gt adj = new List&ltint&gt();
+        for (int i = 0; i &lt _size; i++)
         {
-            adj[i] = _matrix[src, i];
+            if (_matrix[src, i] != 0)
+            {
+                adj.Add(i);
+            }
         }
         return adj;
+    }
+
+    public void printGraph()
+    {
+        Console.WriteLine("[");
+        for (int i = 0; i &lt _size; i++)
+        {
+            for (int j = 0; j &lt _size; j++)
+            {
+                Console.Write(_matrix[i, j] + ", ");
+            }
+            Console.WriteLine("");
+            
+        }
+        Console.Write("]");
+    }
+
+    public void printVertices(int fromVertex)
+    {
+        Console.Write("[");
+        List&ltint&gt vertices = getAdjVertices(fromVertex);
+        for (int i = 0; i &lt vertices.Count; i++)
+        {
+            Console.Write(vertices[i] + ", ");
+        }
+        Console.Write("]");
     }
 }
 </code></pre>
@@ -300,11 +330,11 @@ public class GraphObject
 {
     public class Vertex
     {
-        private Dictionary<Vertex, int> _neighbors;
+        private Dictionary&ltVertex, int&gt _neighbors;
 
         public Vertex()
         {
-            _neighbors = new Dictionary<Vertex, int>();
+            _neighbors = new Dictionary&ltVertex, int&gt();
         }
 
         public void addNeighbor(Vertex vertex, int weight = 1)
@@ -322,14 +352,14 @@ public class GraphObject
             return _neighbors[dest];
         }
 
-        public Dictionary<Vertex, int> getNeighbors()
+        public Dictionary&ltVertex, int&gt getNeighbors()
         {
             return _neighbors;
         }
     }
 
     private int _size;
-    private Dictionary<Vertex, Vertex> _graph = new Dictionary<Vertex, Vertex>();
+    private Dictionary&ltVertex, Vertex&gt _graph = new Dictionary&ltVertex, Vertex&gt();
 
     public GraphObject()
     {
@@ -356,7 +386,7 @@ public class GraphObject
         return _graph[src].getNeighbors().ContainsKey(dest);
     }
 
-    public Dictionary<Vertex, int> getAdjVertices(Vertex src)
+    public Dictionary&ltVertex, int&gt getAdjVertices(Vertex src)
     {
         return _graph[src].getNeighbors();
     }
@@ -380,6 +410,7 @@ public class GraphObject
 			  </div>
 			  <div class="text-center">
 				<img src="images/Graph.PNG" alt="Weighted Undirected Graph">
+				<p></p>
 			  </div>
 			</div>
 			
@@ -389,85 +420,171 @@ public class GraphObject
 			<div class="container-fluid section">
 			  <div class="row">
 				<div class="col-lg-12">
-				  <h1>Object Graph Representation</h1>
-				  <p class="lead">The Object Graph Representation uses instance of classes such as Node or Vertex to represent the Vertices in the graph. There are a series of ways this can be implemented. In the implementation below,
-				  each vertex records the vertices it is connected to in its _neighbors Dictionary. The Dictionary's key is a Vertex and the value is the weight of the edge that connects the vertex to the vertex in the dictionary. 
-				  The GraphObject class itself contains a Dictionary of Vertices for fast lookup. The vertex class can contain more information in other implementations. Adding a vertex, updating an edge, and getting an edge's value
-				  are extremely fast due to the use of Dictionaries for fast lookups.
+				  <h1>Breadth First Search</h1>
+				  <p class="lead">The Breadth First Search Algorithm is a graph traversal algorithm that searchs all nodes a set number of levels away from the source before moving onto the next level in the graph.
+				  This is Level Order Traversal and its output can be shown from the printTraversal() function in the class BFS. Output: [0, 2, 3, 4, 1, 6, 8, 10, 12, 14, 11, 16, 7, 19, 5, 9, 15, 21, 17, 23, 20, 25, 18, 26, 24, 22, ]				  
 				  </p>
 				</div>
 			  </div>
 			  <div class="row">
 				<div class="col-lg-12">
 					  <figure>
-					  <figcaption>Object Graph Representation Using C#</figcaption>
+					  <figcaption>Breadth First Search Using C#</figcaption>
+						<pre class="text-left code-scroll"><code class="language-clike" contenteditable spellcheck="false">using System;
+using System.Collections;
+using System.Collections.Generic;
+
+public class BFS
+{
+    Graph _graph;
+    int _source;
+
+    public bool[] _visited;
+    public List&ltint&gt _traversalOrder = new List&ltint&gt();
+
+    public BFS(Graph graph, int src)
+    {
+        _graph = graph;
+        _source = src;
+        _visited = new bool[graph.getSize()];
+
+        //Breadth First Search uses a Queue from System.Collections to do level order traversal
+        //Can also use a List&ltint&gt class from System.Collections.Generic which requires a few more lines of code to Dequeue
+        Queue queue = new Queue();
+
+        queue.Enqueue(_source);
+        _visited[_source] = true;
+        _traversalOrder.Add(_source);
+
+        while (queue.Count != 0)
+        {
+            int vertex = (int)queue.Dequeue();
+
+            //Add all adjacent vertices to queue
+            List&ltint&gt adj = _graph.getAdjVertices(vertex);
+            for (int i = 0; i &lt adj.Count; i++)
+            {
+                if (_visited[adj[i]] == false)
+                {
+                    queue.Enqueue(adj[i]);
+                    _visited[adj[i]] = true;
+                    _traversalOrder.Add(adj[i]);
+                }                
+            }
+        }
+    }
+
+    public void printTraversal()
+    {
+        Console.Write("[");
+        for (int i = 0; i &lt _traversalOrder.Count; i++)
+        {
+            Console.Write(_traversalOrder[i] + ", ");
+        }
+        Console.Write("]");        
+    }
+
+    public static void Main(string[] args)
+    {
+        //Graph From Image
+        int size = 27;
+        Graph graph = new Graph(size);
+        
+        //Add All Edges...
+
+        int source = 0;
+        BFS bfs = new BFS(graph, source);
+        bfs.printTraversal();
+        Console.Read();
+
+        //Output: [0, 2, 3, 4, 1, 6, 8, 10, 12, 14, 11, 16, 7, 19, 5, 9, 15, 21, 17, 23, 20, 25, 18, 26, 24, 22, ]
+    }
+}</code></pre>
+					  </figure>
+				</div>
+			  </div>
+			</div>
+			
+			<br />
+			
+			<!-- More Page Content -->
+			<div class="container-fluid section">
+			  <div class="row">
+				<div class="col-lg-12">
+				  <h1>Depth First Search</h1>
+				  <p class="lead">The Depth First Search Algorithm is a graph traversal algorithm that searchs all nodes down the tree before moving to the next node adjacent to the source. This is Pre Order Traversal
+				  and its output can be shown from the printTraversal() function in the class DFS. Output: [0, 2, 1, 3, 6, 12, 7, 14, 8, 4, 10, 11, 5, 16, 9, 15, 19, 23, 20, 21, 25, 24, 26, 22, 18, 17, ]				  
+				  </p>
+				</div>
+			  </div>
+			  <div class="row">
+				<div class="col-lg-12">
+					  <figure>
+					  <figcaption>Depth First Search Using C#</figcaption>
 						<pre class="text-left code-scroll"><code class="language-clike" contenteditable spellcheck="false">using System;
 using System.Collections.Generic;
 
-//This class used Vertex objects to represent the vertices in the graph. Additional parameters could be added to the Vertex class such as a key or values
-public class GraphObject
+public class DFS
 {
-    public class Vertex
+    Graph _graph;
+    int _source;
+
+    bool[] _visited;
+    public List&ltint&gt _traversalOrder = new List&ltint&gt();
+
+    public DFS(Graph graph, int source)
     {
-        private Dictionary<Vertex, int> _neighbors;
+        _graph = graph;
+        _source = source;
+        _visited = new bool[graph.getSize()];
 
-        public Vertex()
-        {
-            _neighbors = new Dictionary<Vertex, int>();
-        }
+        _visited[source] = true;
+        _traversalOrder.Add(source);
 
-        public void addNeighbor(Vertex vertex, int weight = 1)
+        List&ltint&gt adj = graph.getAdjVertices(source);
+        for (int i = 0; i &lt adj.Count; i++)
         {
-            _neighbors.Add(vertex, weight);
-        }
-
-        public void removeNeighbor(Vertex vertex)
-        {
-            _neighbors.Remove(vertex);
-        }
-
-        public int getEdge(Vertex dest)
-        {
-            return _neighbors[dest];
-        }
-
-        public Dictionary<Vertex, int> getNeighbors()
-        {
-            return _neighbors;
+            search(adj[i]);
         }
     }
 
-    private int _size;
-    private Dictionary<Vertex, Vertex> _graph = new Dictionary<Vertex, Vertex>();
-
-    public GraphObject()
+    private void search(int vertex)
     {
+        if (_visited[vertex] == false)
+        {
+            _visited[vertex] = true;
+            _traversalOrder.Add(vertex);
+
+            List&ltint&gt adj = _graph.getAdjVertices(vertex);
+            for (int i = 0; i &lt adj.Count; i++)
+            {
+                search(adj[i]);
+            }
+        }        
     }
 
-    public void addVertex(Vertex vertex)
+    public void printTraversal()
     {
-        _graph.Add(vertex, vertex);
-        _size++;
+        Console.Write("[");
+        for (int i = 0; i &lt _traversalOrder.Count; i++)
+        {
+            Console.Write(_traversalOrder[i] + ", ");
+        }
+        Console.Write("]");
     }
 
-    public void setEdge(Vertex src, Vertex dest, int weight)
+    public static void Main(string[] args)
     {
-        _graph[src].addNeighbor(dest, weight);
-    }
+        //Graph From Image
+        int size = 27;
+        Graph graph = new Graph(size);
 
-    public int getEdge(Vertex src, Vertex dest)
-    {
-        return _graph[src].getEdge(dest);
-    }
+        int source = 0;
+        DFS dfs = new DFS(graph, source);
+        dfs.printTraversal();
+        Console.Read();
 
-    public bool hasEdge(Vertex src, Vertex dest)
-    {
-        return _graph[src].getNeighbors().ContainsKey(dest);
-    }
-
-    public Dictionary<Vertex, int> getAdjVertices(Vertex src)
-    {
-        return _graph[src].getNeighbors();
+        //Output: [0, 2, 1, 3, 6, 12, 7, 14, 8, 4, 10, 11, 5, 16, 9, 15, 19, 23, 20, 21, 25, 24, 26, 22, 18, 17, ]
     }
 }</code></pre>
 					  </figure>

@@ -122,7 +122,7 @@ namespace Algorithms
 
         private static void quicksort(int[] array, int low, int high)
         {
-            if (low < high)
+            if (low &lt high)
             {
                 int pivotIndex = partition(array, low, high);
                 quicksort(array, low, pivotIndex - 1);
@@ -141,12 +141,12 @@ namespace Algorithms
             int pivot = array[right];
             right--;
 
-            while (left <= right)
+            while (left &lt= right)
             {
 
                 //Increment low if the low index value is greater than the pivot index value
                 //It is already correctly partitioned. Swap and decrement the pivot otherwise.
-                if (array[left] <= pivot)
+                if (array[left] &lt= pivot)
                 {
                     left++;
                 }
@@ -171,7 +171,7 @@ namespace Algorithms
         public static void printArray(int[] array)
         {
             Console.Write("[");
-            for (int i = 0; i < array.Length - 1; i++)
+            for (int i = 0; i &lt array.Length - 1; i++)
             {
                 Console.Write(array[i] + ", ");
             }
@@ -230,7 +230,7 @@ namespace Algorithms
 		//MergeSort recursively divides the array into 2 sides and merges them together recursively at the end.
         private static void mergesort(int[] array, int low, int high)
         {
-            if (low < high)
+            if (low &lt high)
             {
                 int middle = low + (high - low) / 2;
 
@@ -250,12 +250,12 @@ namespace Algorithms
             int[] rightArray = new int[rightSize];
 
             //Place data in these temporary arrays
-            for (int index = 0; index < leftSize; index++)
+            for (int index = 0; index &lt leftSize; index++)
             {
                 leftArray[index] = array[low + index];
             }
 
-            for (int index = 0; index < rightSize; index++)
+            for (int index = 0; index &lt rightSize; index++)
             {
                 rightArray[index] = array[middle + 1 + index];
             }
@@ -264,9 +264,9 @@ namespace Algorithms
             int j = 0;
 
             int k = low;
-            while (i < leftSize && j < rightSize)
+            while (i &lt leftSize && j &lt rightSize)
             {
-                if (leftArray[i] <= rightArray[j])
+                if (leftArray[i] &lt= rightArray[j])
                 {
                     array[k] = leftArray[i];
                     i++;
@@ -280,14 +280,14 @@ namespace Algorithms
             }
 
             //Add the remaining elements to the input array
-            while (i < leftSize)
+            while (i &lt leftSize)
             {
                 array[k] = leftArray[i];
                 i++;
                 k++;
             }
 
-            while (j < rightSize)
+            while (j &lt rightSize)
             {
                 array[k] = rightArray[j];
                 j++;
@@ -298,7 +298,7 @@ namespace Algorithms
         public static void printArray(int[] array)
         {
             Console.Write("[");
-            for (int i = 0; i < array.Length - 1; i++)
+            for (int i = 0; i &lt array.Length - 1; i++)
             {
                 Console.Write(array[i] + ", ");
             }
