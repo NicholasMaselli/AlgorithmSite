@@ -88,106 +88,100 @@
 					This page will go over a series of Graph Algorithms. Graph representations, Depth First Search, Breadth First Search, Djikstra's Algorithm, A* Algorithm, and more will be addressed
 					</p>
 				</div>
-            </div>        
+            </div>
+
+			<!-- More Page Content -->
+			<div class="container-fluid section">
+			  <div class="row">
+				<div class="col-lg-12">
+				  <h1>Graph Representations</h1>
+				  <p class="lead">Graphs can be represented in 3 primary ways: matrix, adjacency list, and objects. Each of these comes with their own benfits and drawbacks. Below are simple examples of
+				  these 3 graph representaions in C#.				  
+				  </p>
+				</div>
+			  </div>
+			</div>
+			
+			<br />
 		
 			<!-- More Page Content -->
 			<div class="container-fluid section">
 			  <div class="row">
 				<div class="col-lg-12">
-				  <h1>QuickSort</h1>
-				  <p class="lead">The Quicksort algorithm is an O(NLog(N)), in place, and not stable sorting algorithm with its default implementation. QuickSort partitions an array or list into 2 sections
-				  and correctly places a pivot in the sorted array. The partition is a O(N) algorithm which is recursively called on the left partition and the right partition. This equates to log n times 
-				  calls on average in QuickSort's default implementation. 
+				  <h1>Matrix Graph Representation</h1>
+				  <p class="lead">Matrix graph representaion consists of a 2 dimensional array. The i,j pair represents the edge weight of vertex i to vertex j. In an undirected graph, the 2 dimensional array will be symmetric with all
+				  values in the 2 dimensional array equaling 1. In a directed graph, the values are the weights of the edge. This implementation has the benefit of extremely fast lookup for if a vertex has an edge to another vertex.
+				  However, the implementation use a lot of memory O(V^2) and adding a vertex takes O(V^2) time. A matrix graph representation is better for dense graphs where the number of edges is near the maximum number possible
+				  and the memory cost is offset by utilizing all of the space.
 				  </p>
 				</div>
 			  </div>
 			  <div class="row">
 				<div class="col-lg-12">
 					  <figure>
-					  <figcaption>QuickSort Using C#</figcaption>
+					  <figcaption>Matrix Graph Representation Using C#</figcaption>
 						<pre class="text-left code-scroll"><code class="language-clike" contenteditable spellcheck="false">using System;
 
-namespace Algorithms
+//The GraphMatrix class uses a 2 dimensional array named _matrix. The value _matrix[i,j] is the value of the edge from vertex i to vertex j
+public class GraphMatrix
 {
-    public class QuickSort
+    //Matrix representation of the graph
+    private int[,] _matrix;
+
+    //Number of nodes in the graph
+    private int _size;
+
+    public GraphMatrix(int size)
     {
-        /*QuickSort is an O(NLog(N)) divide and conquer sorting algorithm that performs and average of Log(N)
-		steps of its partition function which is O(N).
-        public static void quicksort(int[] array)
-        {
-            int low = 0;
-            int high = array.Length - 1;
-            quicksort(array, low, high);
-        }
+        _size = size;
+        _matrix = new int[size, size];
+    }
 
-        private static void quicksort(int[] array, int low, int high)
+    public void addVertex(int number)
+    {
+        int newSize = _size + number;
+        int[,] newMatrix = new int[newSize, newSize];
+        for (int i = 0; i < _size; i++)
         {
-            if (low < high)
+            for (int j = 0; j < _size; j++)
             {
-                int pivotIndex = partition(array, low, high);
-                quicksort(array, low, pivotIndex - 1);
-                quicksort(array, pivotIndex, high);
+                newMatrix[i, j] = _matrix[i, j];
             }
         }
+        _size = newSize;
+        _matrix = newMatrix;
+    }
 
-        //Key will be the high value for this partition function. Partition is a linear O(N) time algorithm
-        private static int partition(int[] array, int low, int high)
+    public void setEdge(int src, int dest, int value = 1)
+    {
+        _matrix[src, dest] = value;
+    }
+
+    public int getEdge(int src, int dest)
+    {
+        return _matrix[src, dest];
+    }
+
+    public bool hasEdge(int src, int dest)
+    {
+        if (_matrix[src, dest] != 0)
         {
-            int left = low;
-            int right = high;
-            int temp;
-
-            //Start by choosing the pivot to be the last value in the array and decrement the right pointer
-            int pivot = array[right];
-            right--;
-
-            while (left <= right)
-            {
-
-                //Increment low if the low index value is greater than the pivot index value
-                //It is already correctly partitioned. Swap and decrement the pivot otherwise.
-                if (array[left] <= pivot)
-                {
-                    left++;
-                }
-                else
-                {
-                    temp = array[left];
-                    array[left] = array[right];
-                    array[right] = temp;
-
-                    right--;
-                }
-            }
-
-            //Swap pivot to the right + 1 index at the end of the loop
-            temp = array[right + 1];
-            array[right + 1] = array[high];
-            array[high] = temp;
-
-            return right + 1;
+            return true;
         }
-
-        public static void printArray(int[] array)
+        else
         {
-            Console.Write("[");
-            for (int i = 0; i < array.Length - 1; i++)
-            {
-                Console.Write(array[i] + ", ");
-            }
-            Console.Write(array[array.Length - 1]);
-            Console.Write("]");
-
-            //Console.Read() holds console open until closed
-            Console.Read();
+            return false;
         }
+    }
 
-        public static void Main(string[] args)
+    public int[] getAdjVertices(int src)
+    {
+        int[] adj = new int[_size];
+        for (int i = 0; i < _size; i++)
         {
-            int[] sort = { 2, 5, 8, 3, 8, 34, 4, 45, 6, 45, 23, 45, 6, 23, 4, 2, 2, 44 };
-            quicksort(sort);
-            printArray(sort);
+            adj[i] = _matrix[src, i];
         }
+        return adj;
     }
 }
 </code></pre>
@@ -196,125 +190,83 @@ namespace Algorithms
 			  </div>
 			</div>
 			
-			<br/>
+			<br />
 			
 			<!-- More Page Content -->
 			<div class="container-fluid section">
 			  <div class="row">
 				<div class="col-lg-12">
-				  <h1>MergeSort</h1>
-				  <p class="lead">The MergeSort algorithm is an O(NLog(N)), not in place, stable sorting algorithm with its default implementation. MergeSort recursively sorts a list by dividing the array up into
-				  smaller and smaller chunks and using a O(N) merge algorithm to join them back together in sorted order. This requires O(N) extra space its MergeSort's default implementation which means the algorithm
-				  is not in place.
+				  <h1>Adjacency List Graph Representation</h1>
+				  <p class="lead">The Adjacency List Graph Representation cosists of an array of Linked Lists. The size of the array corresponds to the number of vertices while the Linked Lists correspond to
+				  the vertices that are connected to the ith vertex by an edge. This representaion can be used use weighted graphs if the Linked Lists hold pairs of integers where the second integer corresponds
+				  to the edge's weight. This implementation is an unweighted and undirected graph class. An adjacency List graph representation is better for sparse graphs where there are less edges so we do not
+				  waste memory using a matrix representation.
 				  </p>
 				</div>
 			  </div>
 			  <div class="row">
 				<div class="col-lg-12">
 					  <figure>
-					  <figcaption>MergeSort Using C#</figcaption>
+					  <figcaption>Adjacency List Graph Representation Using C#</figcaption>
 						<pre class="text-left code-scroll"><code class="language-clike" contenteditable spellcheck="false">using System;
 
-namespace Algorithms
+//For the GraphList class, the ith vertex in array is a list of vertices adjacent to the ith vertex. This can represent weighted graphs if the List is changed to be a List of integer pairs
+//This implementation is unweighted
+public class GraphList
 {
-    public class MergeSort
+    private int _size;
+    private List<int>[] _graph;
+
+    public GraphList(int size)
     {
-        public static void mergesort(int[] array)
-        {
-            int low = 0;
-            int high = array.Length - 1;
+        _size = size;
+        _graph = new List<int>[_size];
+    }
 
-            mergesort(array, low, high);
+    public void addVertices(int number)
+    {
+        int newSize = _size + number;
+
+        List<int>[] newGraph = new List<int>[newSize];
+        for (int i = 0; i < _size; i++)
+        {
+            newGraph[i] = _graph[i];
+        }
+        _size = newSize;
+        _graph = newGraph;
+    }
+
+    public void setEdge(int src, int dest)
+    {
+        if (_graph[src] == null)
+        {
+            _graph[src] = new List<int>();
         }
 
-		//MergeSort recursively divides the array into 2 sides and merges them together recursively at the end.
-        private static void mergesort(int[] array, int low, int high)
+        if (_graph[dest] == null)
         {
-            if (low < high)
-            {
-                int middle = low + (high - low) / 2;
-
-                mergesort(array, low, middle);
-                mergesort(array, middle + 1, high);
-
-                merge(array, low, high, middle);
-            }
+            _graph[dest] = new List<int>();
         }
 
-        private static void merge(int[] array, int low, int high, int middle)
+        _graph[src].Add(dest);
+        _graph[dest].Add(src);
+    }
+
+    public bool hasEdge(int src, int dest)
+    {
+        for (int i = 0; i < _graph[src].Count; i++)
         {
-            int leftSize = middle - low + 1;
-            int rightSize = high - middle;
-
-            int[] leftArray = new int[leftSize];
-            int[] rightArray = new int[rightSize];
-
-            //Place data in these temporary arrays
-            for (int index = 0; index < leftSize; index++)
+            if (_graph[src][i] == dest)
             {
-                leftArray[index] = array[low + index];
-            }
-
-            for (int index = 0; index < rightSize; index++)
-            {
-                rightArray[index] = array[middle + 1 + index];
-            }
-
-            int i = 0;
-            int j = 0;
-
-            int k = low;
-            while (i < leftSize && j < rightSize)
-            {
-                if (leftArray[i] <= rightArray[j])
-                {
-                    array[k] = leftArray[i];
-                    i++;
-                }
-                else
-                {
-                    array[k] = rightArray[j];
-                    j++;
-                }
-                k++;
-            }
-
-            //Add the remaining elements to the input array
-            while (i < leftSize)
-            {
-                array[k] = leftArray[i];
-                i++;
-                k++;
-            }
-
-            while (j < rightSize)
-            {
-                array[k] = rightArray[j];
-                j++;
-                k++;
+                return true;
             }
         }
+        return false;
+    }
 
-        public static void printArray(int[] array)
-        {
-            Console.Write("[");
-            for (int i = 0; i < array.Length - 1; i++)
-            {
-                Console.Write(array[i] + ", ");
-            }
-            Console.Write(array[array.Length - 1]);
-            Console.Write("]");
-
-            //Console.Read() holds console open until closed
-            Console.Read();
-        }
-        
-        public static void Main(string[] args)
-        {
-            int[] sort = { 2, 5, 8, 3, 8, 34, 4, 45, 6, 45, 23, 45, 6, 23, 4, 2, 2, 44 };
-            mergesort(sort);
-            printArray(sort);
-        }
+    public List<int> getAdjVertices(int src)
+    {
+        return _graph[src];
     }
 }</code></pre>
 					  </figure>
@@ -322,9 +274,212 @@ namespace Algorithms
 			  </div>
 			</div>
 			
+			<br />
+
+			<!-- More Page Content -->
+			<div class="container-fluid section">
+			  <div class="row">
+				<div class="col-lg-12">
+				  <h1>Object Graph Representation</h1>
+				  <p class="lead">The Object Graph Representation uses instance of classes such as Node or Vertex to represent the Vertices in the graph. There are a series of ways this can be implemented. In the implementation below,
+				  each vertex records the vertices it is connected to in its _neighbors Dictionary. The Dictionary's key is a Vertex and the value is the weight of the edge that connects the vertex to the vertex in the dictionary. 
+				  The GraphObject class itself contains a Dictionary of Vertices for fast lookup. The vertex class can contain more information in other implementations. Adding a vertex, updating an edge, and getting an edge's value
+				  are extremely fast due to the use of Dictionaries for fast lookups.
+				  </p>
+				</div>
+			  </div>
+			  <div class="row">
+				<div class="col-lg-12">
+					  <figure>
+					  <figcaption>Object Graph Representation Using C#</figcaption>
+						<pre class="text-left code-scroll"><code class="language-clike" contenteditable spellcheck="false">using System;
+using System.Collections.Generic;
+
+//This class used Vertex objects to represent the vertices in the graph. Additional parameters could be added to the Vertex class such as a key or values
+public class GraphObject
+{
+    public class Vertex
+    {
+        private Dictionary<Vertex, int> _neighbors;
+
+        public Vertex()
+        {
+            _neighbors = new Dictionary<Vertex, int>();
+        }
+
+        public void addNeighbor(Vertex vertex, int weight = 1)
+        {
+            _neighbors.Add(vertex, weight);
+        }
+
+        public void removeNeighbor(Vertex vertex)
+        {
+            _neighbors.Remove(vertex);
+        }
+
+        public int getEdge(Vertex dest)
+        {
+            return _neighbors[dest];
+        }
+
+        public Dictionary<Vertex, int> getNeighbors()
+        {
+            return _neighbors;
+        }
+    }
+
+    private int _size;
+    private Dictionary<Vertex, Vertex> _graph = new Dictionary<Vertex, Vertex>();
+
+    public GraphObject()
+    {
+    }
+
+    public void addVertex(Vertex vertex)
+    {
+        _graph.Add(vertex, vertex);
+        _size++;
+    }
+
+    public void setEdge(Vertex src, Vertex dest, int weight)
+    {
+        _graph[src].addNeighbor(dest, weight);
+    }
+
+    public int getEdge(Vertex src, Vertex dest)
+    {
+        return _graph[src].getEdge(dest);
+    }
+
+    public bool hasEdge(Vertex src, Vertex dest)
+    {
+        return _graph[src].getNeighbors().ContainsKey(dest);
+    }
+
+    public Dictionary<Vertex, int> getAdjVertices(Vertex src)
+    {
+        return _graph[src].getNeighbors();
+    }
+}</code></pre>
+					  </figure>
+				</div>
+			  </div>
+			</div>
+			
+			<br />
+
+			<!-- More Page Content -->
+			<div class="container-fluid section">
+			  <div class="row">
+				<div class="col-lg-12">
+				  <h1>Graph Algorithms</h1>
+				  <p class="lead">Graphs are extremely to modern computing applications and algorthms designed to quickly travese them are essential. Below are implementations of the depth first search,
+				  breadth first search, Djikstra's Shortest Path, and A* graph algorithms. The graph being used in these algorithms is pictured below.
+				  </p>
+				</div>
+			  </div>
+			  <div class="text-center">
+				<img src="images/Graph.PNG" alt="Weighted Undirected Graph">
+			  </div>
+			</div>
+			
+			<br />
+			
+			<!-- More Page Content -->
+			<div class="container-fluid section">
+			  <div class="row">
+				<div class="col-lg-12">
+				  <h1>Object Graph Representation</h1>
+				  <p class="lead">The Object Graph Representation uses instance of classes such as Node or Vertex to represent the Vertices in the graph. There are a series of ways this can be implemented. In the implementation below,
+				  each vertex records the vertices it is connected to in its _neighbors Dictionary. The Dictionary's key is a Vertex and the value is the weight of the edge that connects the vertex to the vertex in the dictionary. 
+				  The GraphObject class itself contains a Dictionary of Vertices for fast lookup. The vertex class can contain more information in other implementations. Adding a vertex, updating an edge, and getting an edge's value
+				  are extremely fast due to the use of Dictionaries for fast lookups.
+				  </p>
+				</div>
+			  </div>
+			  <div class="row">
+				<div class="col-lg-12">
+					  <figure>
+					  <figcaption>Object Graph Representation Using C#</figcaption>
+						<pre class="text-left code-scroll"><code class="language-clike" contenteditable spellcheck="false">using System;
+using System.Collections.Generic;
+
+//This class used Vertex objects to represent the vertices in the graph. Additional parameters could be added to the Vertex class such as a key or values
+public class GraphObject
+{
+    public class Vertex
+    {
+        private Dictionary<Vertex, int> _neighbors;
+
+        public Vertex()
+        {
+            _neighbors = new Dictionary<Vertex, int>();
+        }
+
+        public void addNeighbor(Vertex vertex, int weight = 1)
+        {
+            _neighbors.Add(vertex, weight);
+        }
+
+        public void removeNeighbor(Vertex vertex)
+        {
+            _neighbors.Remove(vertex);
+        }
+
+        public int getEdge(Vertex dest)
+        {
+            return _neighbors[dest];
+        }
+
+        public Dictionary<Vertex, int> getNeighbors()
+        {
+            return _neighbors;
+        }
+    }
+
+    private int _size;
+    private Dictionary<Vertex, Vertex> _graph = new Dictionary<Vertex, Vertex>();
+
+    public GraphObject()
+    {
+    }
+
+    public void addVertex(Vertex vertex)
+    {
+        _graph.Add(vertex, vertex);
+        _size++;
+    }
+
+    public void setEdge(Vertex src, Vertex dest, int weight)
+    {
+        _graph[src].addNeighbor(dest, weight);
+    }
+
+    public int getEdge(Vertex src, Vertex dest)
+    {
+        return _graph[src].getEdge(dest);
+    }
+
+    public bool hasEdge(Vertex src, Vertex dest)
+    {
+        return _graph[src].getNeighbors().ContainsKey(dest);
+    }
+
+    public Dictionary<Vertex, int> getAdjVertices(Vertex src)
+    {
+        return _graph[src].getNeighbors();
+    }
+}</code></pre>
+					  </figure>
+				</div>
+			  </div>
+			</div>
+			
+			<br />
+			
 		</div>
         <!-- /#page-content-wrapper -->
-
+				
 	</div>	
 	<!-- /#wrapper -->	
 		

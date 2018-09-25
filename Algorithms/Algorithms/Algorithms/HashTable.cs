@@ -1,7 +1,7 @@
 ﻿using System;
     
 //Where clause ensure the generic values are classes and enables the == operator
-class HashTable<TKey, TValue>
+public class HashTable<TKey, TValue>
 {
 
     //Potential improvements: Use prime array to allow uniform distribution of keys even after Grow() Shrink() function, 
@@ -204,8 +204,9 @@ class HashTable<TKey, TValue>
 }
 
 //Testing Class since Main cannot be within a generic class
-class Test
+class HashTableTest
 {
+    /*
     public static void Main(string[] args)
     {
         HashTable<string, string> hash = new HashTable<string, string>();
@@ -246,4 +247,5 @@ class Test
 
         Console.Read();
     }
+    */
 }
