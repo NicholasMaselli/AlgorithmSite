@@ -35,13 +35,23 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BFS.cs" />
+    <Compile Include="BinaryTree.cs" />
+    <Compile Include="NaryTree.cs" />
+    <Compile Include="Djikstra.cs" />
+    <Compile Include="DFS.cs" />
     <Compile Include="Graph.cs" />
     <Compile Include="HashTable.cs" />
     <Compile Include="MergeSort.cs" />
     <Compile Include="QuickSort.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Priority Queue, Version=4.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OptimizedPriorityQueue.4.1.1\lib\net45\Priority Queue.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

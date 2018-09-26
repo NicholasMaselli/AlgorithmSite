@@ -1,43 +1,41 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 
-public class BFS
+public class DFS
 {
     Graph _graph;
     int _source;
 
-    public bool[] _visited;
+    bool[] _visited;
     public List<int> _traversalOrder = new List<int>();
 
-    public BFS(Graph graph, int src)
+    public DFS(Graph graph, int source)
     {
         _graph = graph;
-        _source = src;
+        _source = source;
         _visited = new bool[graph.getSize()];
 
-        //Breadth First Search uses a Queue from System.Collections to do level order traversal
-        //Can also use a List<int> class from System.Collections.Generic which requires a few more lines of code to Dequeue
-        Queue queue = new Queue();
+        _visited[source] = true;
+        _traversalOrder.Add(source);
 
-        queue.Enqueue(_source);
-        _visited[_source] = true;
-        _traversalOrder.Add(_source);
-
-        while (queue.Count != 0)
+        List<int> adj = graph.getAdjVertices(source);
+        for (int i = 0; i < adj.Count; i++)
         {
-            int vertex = (int)queue.Dequeue();
+            search(adj[i]);
+        }
+    }
 
-            //Add all adjacent vertices to queue
+    private void search(int vertex)
+    {
+        if (_visited[vertex] == false)
+        {
+            _visited[vertex] = true;
+            _traversalOrder.Add(vertex);
+
             List<int> adj = _graph.getAdjVertices(vertex);
             for (int i = 0; i < adj.Count; i++)
             {
-                if (_visited[adj[i]] == false)
-                {
-                    queue.Enqueue(adj[i]);
-                    _visited[adj[i]] = true;
-                    _traversalOrder.Add(adj[i]);
-                }                
+                search(adj[i]);
             }
         }
     }
@@ -49,7 +47,7 @@ public class BFS
         {
             Console.Write(_traversalOrder[i] + ", ");
         }
-        Console.Write("]");        
+        Console.Write("]");
     }
     
     /*
@@ -126,11 +124,11 @@ public class BFS
         graph.setEdge(26, 24, 20);
 
         int source = 0;
-        BFS bfs = new BFS(graph, source);
-        bfs.PrintTraversal();
+        DFS dfs = new DFS(graph, source);
+        dfs.PrintTraversal();
         Console.Read();
 
-        //Output: [0, 2, 3, 4, 1, 6, 8, 10, 12, 14, 11, 16, 7, 19, 5, 9, 15, 21, 17, 23, 20, 25, 18, 26, 24, 22, ]
+        //Output: [0, 2, 1, 3, 6, 12, 7, 14, 8, 4, 10, 11, 5, 16, 9, 15, 19, 23, 20, 21, 25, 24, 26, 22, 18, 17, ]
     }
     */
-}        
+}

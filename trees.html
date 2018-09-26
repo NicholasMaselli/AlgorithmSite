@@ -83,9 +83,10 @@
         <div id="page-content-wrapper">
             <div class="container-fluid">
                 <div class="jumbotron text-center">
-					<h1 class="display-2"><b>Graphs</b></h1>
+					<h1 class="display-2"><b>Trees</b></h1>
 					<p>
-					This page will go over a series of Graph Algorithms. Graph representations, Depth First Search, Breadth First Search, Djikstra's Algorithm, A* Algorithm, and more will be addressed
+					This page will go over a series of Tree Algorithms. Concepts discussed will be tree construction, tree traversal, and types of trees. Types of trees
+					include Binary Trees, N-ary Trees, Tri-Trees, and Red/Black Trees which are balanced binary trees. Inorder, postorder, and preorder will also be addressed.
 					</p>
 				</div>
             </div>
@@ -94,9 +95,8 @@
 			<div class="container-fluid section">
 			  <div class="row">
 				<div class="col-lg-12">
-				  <h1>Graph Representations</h1>
-				  <p class="lead">Graphs can be represented in 3 primary ways: matrix, adjacency list, and objects. Each of these comes with their own benfits and drawbacks. Below are simple examples of
-				  these 3 graph representaions in C#.				  
+				  <h1>Types of Trees</h1>
+				  <p class="lead">This section will show implementations of Binary Trees, N-ary Trees, Tri-Trees, and Red/Black Trees. 				  
 				  </p>
 				</div>
 			  </div>
@@ -108,113 +108,62 @@
 			<div class="container-fluid section">
 			  <div class="row">
 				<div class="col-lg-12">
-				  <h1>Matrix Graph Representation</h1>
-				  <p class="lead">Matrix graph representaion consists of a 2 dimensional array. The i,j pair represents the edge weight of vertex i to vertex j. In an undirected graph, the 2 dimensional array will be symmetric with all
-				  values in the 2 dimensional array equaling 1. In a directed graph, the values are the weights of the edge. This implementation has the benefit of extremely fast lookup for if a vertex has an edge to another vertex.
-				  However, the implementation use a lot of memory O(V^2) and adding a vertex takes O(V^2) time. A matrix graph representation is better for dense graphs where the number of edges is near the maximum number possible
-				  and the memory cost is offset by utilizing all of the space.
-				  </p>
+				  <h1>Binary Trees</h1>
+				  <p class="lead">Binary Trees are trees where each node has at most 2 children. A full binary tree is a binary tree where every node has either 0 or 2 children.
+				  A Complete binary tree is a tree with all levels filled except the last row, which can still be filled but doesn't have to be, and all nodes are as left as
+				  possible in the tree. A binary tree is said to be perfect is all all nodes not on the last level have 2 children and all leaves are on the same level. Finally,
+				  a binary tree is balanced if a tree with N nodes has a height of O(Log(N)). A Binary Tree implementation is shown below.
 				</div>
 			  </div>
 			  <div class="row">
 				<div class="col-lg-12">
 					  <figure>
-					  <figcaption>Matrix Graph Representation Using C#</figcaption>
+					  <figcaption>Binary Tree Using C#</figcaption>
 						<pre class="text-left code-scroll"><code class="language-clike" contenteditable spellcheck="false">using System;
 using System.Collections.Generic;
 
-//The GraphMatrix class uses a 2 dimensional array named _matrix. The value _matrix[i,j] is the value of the edge from vertex i to vertex j
-public class GraphMatrix
+public class Node&ltT&gt
 {
-    //Matrix representation of the graph
-    private int[,] _matrix;
+    public T data;
+    public Node&ltT&gt left;
+    public Node&ltT&gt right;
 
-    //Number of nodes in the graph
-    private int _size;
-
-    public GraphMatrix(int size)
+    public Node(T data)
     {
-        _size = size;
-        _matrix = new int[size, size];
-    }
-
-    public void addVertex(int number)
-    {
-        int newSize = _size + number;
-        int[,] newMatrix = new int[newSize, newSize];
-        for (int i = 0; i &lt _size; i++)
-        {
-            for (int j = 0; j &lt _size; j++)
-            {
-                newMatrix[i, j] = _matrix[i, j];
-            }
-        }
-        _size = newSize;
-        _matrix = newMatrix;
-    }
-
-    public void setEdge(int src, int dest, int value = 1)
-    {
-        _matrix[src, dest] = value;
-    }
-
-    public int getEdge(int src, int dest)
-    {
-        return _matrix[src, dest];
-    }
-
-    public bool hasEdge(int src, int dest)
-    {
-        if (_matrix[src, dest] != 0)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    public List&ltint&gt getAdjVertices(int src)
-    {
-        List&ltin&gt adj = new List&ltint&gt();
-        for (int i = 0; i &lt _size; i++)
-        {
-            if (_matrix[src, i] != 0)
-            {
-                adj.Add(i);
-            }
-        }
-        return adj;
-    }
-
-    public void printGraph()
-    {
-        Console.WriteLine("[");
-        for (int i = 0; i &lt _size; i++)
-        {
-            for (int j = 0; j &lt _size; j++)
-            {
-                Console.Write(_matrix[i, j] + ", ");
-            }
-            Console.WriteLine("");
-            
-        }
-        Console.Write("]");
-    }
-
-    public void printVertices(int fromVertex)
-    {
-        Console.Write("[");
-        List&ltint&gt vertices = getAdjVertices(fromVertex);
-        for (int i = 0; i &lt vertices.Count; i++)
-        {
-            Console.Write(vertices[i] + ", ");
-        }
-        Console.Write("]");
+        this.data = data;
+        left = null;
+        right = null;
     }
 }
-</code></pre>
+
+public class BinaryTree&ltT&gt
+{
+    public Node&ltT&gt root;
+
+    public BinaryTree()
+    {
+        root = null;
+    }
+
+    public BinaryTree(T data)
+    {
+        root = new Node&ltT&gt(data);
+    }
+}
+
+public class BinaryTreeTest
+{
+    public static void Main(string[] args)
+    {
+        int data = 10;
+        BinaryTree&ltint&gt tree = new BinaryTree&ltint&gt(data);
+        tree.root.left = new Node&ltint&gt(1);
+        tree.root.right = new Node&ltint&gt(2);
+        tree.root.left.left = new Node&ltint&gt(5);
+        tree.root.left.right = new Node&ltint&gt(3);
+        tree.root.right = new Node&ltint&gt(4);
+    }
+}</code></pre>
 					  </figure>
 				</div>
 			  </div>
@@ -226,77 +175,53 @@ public class GraphMatrix
 			<div class="container-fluid section">
 			  <div class="row">
 				<div class="col-lg-12">
-				  <h1>Adjacency List Graph Representation</h1>
-				  <p class="lead">The Adjacency List Graph Representation cosists of an array of Linked Lists. The size of the array corresponds to the number of vertices while the Linked Lists correspond to
-				  the vertices that are connected to the ith vertex by an edge. This representaion can be used use weighted graphs if the Linked Lists hold pairs of integers where the second integer corresponds
-				  to the edge's weight. This implementation is an unweighted and undirected graph class. An adjacency List graph representation is better for sparse graphs where there are less edges so we do not
-				  waste memory using a matrix representation.
+				  <h1>N-ary Trees</h1>
+				  <p class="lead">N-ary Trees are similar to Binary Trees except that each node can have any number of children. A very simple Nary-Tree implementation is below.
 				  </p>
 				</div>
 			  </div>
 			  <div class="row">
 				<div class="col-lg-12">
 					  <figure>
-					  <figcaption>Adjacency List Graph Representation Using C#</figcaption>
+					  <figcaption>N-ary Tree Implementation Using C#</figcaption>
 						<pre class="text-left code-scroll"><code class="language-clike" contenteditable spellcheck="false">using System;
+using System.Collections.Generic;
 
-//For the GraphList class, the ith vertex in array is a list of vertices adjacent to the ith vertex. This can represent weighted graphs if the List is changed to be a List of integer pairs
-//This implementation is unweighted
-public class GraphList
+public class Node&ltT&gt
 {
-    private int _size;
-    private List<int>[] _graph;
+    public T data;
+    public List&ltNode&ltT&gt&gt nodes = new List&ltNode&ltT&gt&gt();
 
-    public GraphList(int size)
+    public Node(T data)
     {
-        _size = size;
-        _graph = new List<int>[_size];
+        this.data = data;
     }
+}
 
-    public void addVertices(int number)
+public class Tree&ltT&gt
+{
+    public Node&ltT&gt root;
+
+    public Tree(T data)
     {
-        int newSize = _size + number;
-
-        List<int>[] newGraph = new List<int>[newSize];
-        for (int i = 0; i < _size; i++)
-        {
-            newGraph[i] = _graph[i];
-        }
-        _size = newSize;
-        _graph = newGraph;
+        root = new Node&ltT&gt(data);
     }
+}
 
-    public void setEdge(int src, int dest)
+public class TestTree
+{
+    public static void Main(string[] args)
     {
-        if (_graph[src] == null)
-        {
-            _graph[src] = new List<int>();
-        }
-
-        if (_graph[dest] == null)
-        {
-            _graph[dest] = new List<int>();
-        }
-
-        _graph[src].Add(dest);
-        _graph[dest].Add(src);
-    }
-
-    public bool hasEdge(int src, int dest)
-    {
-        for (int i = 0; i < _graph[src].Count; i++)
-        {
-            if (_graph[src][i] == dest)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public List<int> getAdjVertices(int src)
-    {
-        return _graph[src];
+        Tree&ltint&gt tree = new Tree&ltint&gt(10);
+        tree.root.nodes.Add(new Node&ltint&gt(3));
+        tree.root.nodes.Add(new Node&ltint&gt(4));
+        tree.root.nodes.Add(new Node&ltint&gt(10));
+        tree.root.nodes.Add(new Node&ltint&gt(7));
+        tree.root.nodes.Add(new Node&ltint&gt(17));
+        tree.root.nodes[1].nodes.Add(new Node&ltint&gt(17));
+        tree.root.nodes[2].nodes.Add(new Node&ltint&gt(17));
+        tree.root.nodes[3].nodes.Add(new Node&ltint&gt(17));
+        tree.root.nodes[3].nodes[0].nodes.Add(new Node&ltint&gt(1));
     }
 }</code></pre>
 					  </figure>

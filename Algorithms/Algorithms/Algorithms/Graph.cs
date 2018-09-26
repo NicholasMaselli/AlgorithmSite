@@ -1,5 +1,104 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+
+//The GraphMatrix class uses a 2 dimensional array named _matrix. The value _matrix[i,j] is the value of the edge from vertex i to vertex j
+public class Graph
+{
+    //Matrix representation of the graph
+    private int[,] _matrix;
+
+    //Number of nodes in the graph
+    private int _size;
+
+    public Graph(int size)
+    {
+        _size = size;
+        _matrix = new int[size, size];
+    }
+
+    public int getSize()
+    {
+        return _size;
+    }
+
+    public void addVertex(int number)
+    {
+        int newSize = _size + number;
+        int[,] newMatrix = new int[newSize, newSize];
+        for (int i = 0; i < _size; i++)
+        {
+            for (int j = 0; j < _size; j++)
+            {
+                newMatrix[i, j] = _matrix[i, j];
+            }
+        }
+        _size = newSize;
+        _matrix = newMatrix;
+    }
+
+    public void setEdge(int src, int dest, int value = 1)
+    {
+        _matrix[src, dest] = value;
+    }
+
+    public int getEdge(int src, int dest)
+    {
+        return _matrix[src, dest];
+    }
+
+    public bool hasEdge(int src, int dest)
+    {
+        if (_matrix[src, dest] != 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public List<int> getAdjVertices(int src)
+    {
+        List<int> adj = new List<int>();
+        for (int i = 0; i < _size; i++)
+        {
+            if (_matrix[src, i] != 0)
+            {
+                adj.Add(i);
+            }
+
+        }
+        return adj;
+    }
+
+    public void printGraph()
+    {
+        Console.WriteLine("[");
+        for (int i = 0; i < _size; i++)
+        {
+            for (int j = 0; j < _size; j++)
+            {
+                Console.Write(_matrix[i, j] + ", ");
+            }
+            Console.WriteLine("");
+
+        }
+        Console.Write("]");
+    }
+
+    public void printVertices(int fromVertex)
+    {
+        Console.Write("[");
+        List<int> vertices = getAdjVertices(fromVertex);
+        for (int i = 0; i < vertices.Count; i++)
+        {
+            Console.Write(vertices[i] + ", ");
+        }
+        Console.Write("]");
+    }
+}
 
 //This class used Vertex objects to represent the vertices in the graph. Additional parameters could be added to the Vertex class such as a key or values
 public class GraphObject
