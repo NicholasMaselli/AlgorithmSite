@@ -40,6 +40,7 @@
   <ItemGroup>
     <Compile Include="BFS.cs" />
     <Compile Include="BinaryTree.cs" />
+    <Compile Include="AVLTree.cs" />
     <Compile Include="NaryTree.cs" />
     <Compile Include="Djikstra.cs" />
     <Compile Include="DFS.cs" />
@@ -47,6 +48,7 @@
     <Compile Include="HashTable.cs" />
     <Compile Include="MergeSort.cs" />
     <Compile Include="QuickSort.cs" />
+    <Compile Include="TrieTree.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Priority Queue, Version=4.1.1.0, Culture=neutral, processorArchitecture=MSIL">

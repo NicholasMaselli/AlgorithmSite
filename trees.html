@@ -86,7 +86,7 @@
 					<h1 class="display-2"><b>Trees</b></h1>
 					<p>
 					This page will go over a series of Tree Algorithms. Concepts discussed will be tree construction, tree traversal, and types of trees. Types of trees
-					include Binary Trees, N-ary Trees, Tri-Trees, and Red/Black Trees which are balanced binary trees. Inorder, postorder, and preorder will also be addressed.
+					include Binary Trees, N-ary Trees, Tri-Trees, and Red/Black Trees which are balanced binary trees. Inorder, postorder, and preorder will also be addressed
 					</p>
 				</div>
             </div>
@@ -235,259 +235,235 @@ public class TestTree
 			<div class="container-fluid section">
 			  <div class="row">
 				<div class="col-lg-12">
-				  <h1>Object Graph Representation</h1>
-				  <p class="lead">The Object Graph Representation uses instance of classes such as Node or Vertex to represent the Vertices in the graph. There are a series of ways this can be implemented. In the implementation below,
-				  each vertex records the vertices it is connected to in its _neighbors Dictionary. The Dictionary's key is a Vertex and the value is the weight of the edge that connects the vertex to the vertex in the dictionary. 
-				  The GraphObject class itself contains a Dictionary of Vertices for fast lookup. The vertex class can contain more information in other implementations. Adding a vertex, updating an edge, and getting an edge's value
-				  are extremely fast due to the use of Dictionaries for fast lookups.
+				  <h1>AVL Tree</h1>
+				  <p class="lead">
+				  AVL Tree is a data structure where the height of the tree is O(Log(N)) through balancing. Keeping the tree balanced allows us to perform O(Log(N)) time lookups with binary search.
+				  Functions such as search, delete, min, max can be added easily with guarenteed fast performance.
 				  </p>
 				</div>
 			  </div>
 			  <div class="row">
 				<div class="col-lg-12">
 					  <figure>
-					  <figcaption>Object Graph Representation Using C#</figcaption>
-						<pre class="text-left code-scroll"><code class="language-clike" contenteditable spellcheck="false">using System;
-using System.Collections.Generic;
-
-//This class used Vertex objects to represent the vertices in the graph. Additional parameters could be added to the Vertex class such as a key or values
-public class GraphObject
-{
-    public class Vertex
-    {
-        private Dictionary&ltVertex, int&gt _neighbors;
-
-        public Vertex()
-        {
-            _neighbors = new Dictionary&ltVertex, int&gt();
-        }
-
-        public void addNeighbor(Vertex vertex, int weight = 1)
-        {
-            _neighbors.Add(vertex, weight);
-        }
-
-        public void removeNeighbor(Vertex vertex)
-        {
-            _neighbors.Remove(vertex);
-        }
-
-        public int getEdge(Vertex dest)
-        {
-            return _neighbors[dest];
-        }
-
-        public Dictionary&ltVertex, int&gt getNeighbors()
-        {
-            return _neighbors;
-        }
-    }
-
-    private int _size;
-    private Dictionary&ltVertex, Vertex&gt _graph = new Dictionary&ltVertex, Vertex&gt();
-
-    public GraphObject()
-    {
-    }
-
-    public void addVertex(Vertex vertex)
-    {
-        _graph.Add(vertex, vertex);
-        _size++;
-    }
-
-    public void setEdge(Vertex src, Vertex dest, int weight)
-    {
-        _graph[src].addNeighbor(dest, weight);
-    }
-
-    public int getEdge(Vertex src, Vertex dest)
-    {
-        return _graph[src].getEdge(dest);
-    }
-
-    public bool hasEdge(Vertex src, Vertex dest)
-    {
-        return _graph[src].getNeighbors().ContainsKey(dest);
-    }
-
-    public Dictionary&ltVertex, int&gt getAdjVertices(Vertex src)
-    {
-        return _graph[src].getNeighbors();
-    }
-}</code></pre>
-					  </figure>
-				</div>
-			  </div>
-			</div>
-			
-			<br />
-
-			<!-- More Page Content -->
-			<div class="container-fluid section">
-			  <div class="row">
-				<div class="col-lg-12">
-				  <h1>Graph Algorithms</h1>
-				  <p class="lead">Graphs are extremely to modern computing applications and algorthms designed to quickly travese them are essential. Below are implementations of the depth first search,
-				  breadth first search, Djikstra's Shortest Path, and A* graph algorithms. The graph being used in these algorithms is pictured below. The Graph class is the GraphMatrix class form above
-				  remaned to Graph.
-				  </p>
-				</div>
-			  </div>
-			  <div class="text-center">
-				<img src="images/Graph.png" alt="Weighted Undirected Graph">
-				<p></p>
-			  </div>
-			</div>
-			
-			<br />
-			
-			<!-- More Page Content -->
-			<div class="container-fluid section">
-			  <div class="row">
-				<div class="col-lg-12">
-				  <h1>Breadth First Search</h1>
-				  <p class="lead">The Breadth First Search Algorithm is a graph traversal algorithm that searchs all nodes a set number of levels away from the source before moving onto the next level in the graph.
-				  This is Level Order Traversal and its output can be shown from the printTraversal() function in the class BFS. Output: [0, 2, 3, 4, 1, 6, 8, 10, 12, 14, 11, 16, 7, 19, 5, 9, 15, 21, 17, 23, 20, 25, 18, 26, 24, 22, ]				  
-				  </p>
-				</div>
-			  </div>
-			  <div class="row">
-				<div class="col-lg-12">
-					  <figure>
-					  <figcaption>Breadth First Search Using C#</figcaption>
+					  <figcaption>AVL Tree Using C#</figcaption>
 						<pre class="text-left code-scroll"><code class="language-clike" contenteditable spellcheck="false">using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public class BFS
+public class Node
 {
-    Graph _graph;
-    int _source;
+    public int data;
+    public int height;
+    public Node left;
+    public Node right;
 
-    public bool[] _visited;
-    public List&ltint&gt _traversalOrder = new List&ltint&gt();
-
-    public BFS(Graph graph, int src)
+    public Node(int data)
     {
-        _graph = graph;
-        _source = src;
-        _visited = new bool[graph.getSize()];
+        this.data = data;
+        height = 1;
+    }
+}
 
-        //Breadth First Search uses a Queue from System.Collections to do level order traversal
-        //Can also use a List&ltint&gt class from System.Collections.Generic which requires a few more lines of code to Dequeue
+public class AVLTree
+{
+
+    public Node root;
+
+    public AVLTree()
+    {
+        root = null;
+    }
+
+    public void Insert(int data)
+    {
+        if (root == null)
+        {
+            root = new Node(data);
+            return;
+        }
+
+        root = Insert(root, data);
+    }
+
+    private Node Insert(Node node, int data)
+    {
+        //Perform standard BST Insert
+        if (node == null)
+        {
+            return new Node(data);
+        }
+
+        if (data &lt node.data)
+        {
+            node.left = Insert(node.left, data);
+        }
+        else if (data &gt node.data)
+        {
+            node.right = Insert(node.right, data);
+        }
+        else
+        {
+            //Cannot insert a duplicate key
+            return node;
+        }
+
+        //Set this node's height to be the height of the larger subtree + 1
+        node.height = Math.Max(Height(node.left), Height(node.right)) + 1;
+
+        //Find the first unbalanced node
+        int balance = Balance(node);
+
+        //Need to rebalance the tree        
+        if (balance &gt 1 && node.left != null && data &lt node.left.data)
+        {
+            //left left insert
+            return rightRotate(node);
+        }
+        else if (balance &gt 1 && node.left != null && data &gt node.left.data)
+        {
+            //left right insert
+            node.left = leftRotate(node.left);
+            return rightRotate(node);
+        }
+        else if (balance &lt -1 && node.right != null && data &gt node.right.data)
+        {
+            //right right insert
+            return leftRotate(node);
+        }
+        else if (balance &lt -1 && node.right != null && data &lt node.right.data)
+        {
+            //right left insert
+            node.right = rightRotate(node.right);
+            return leftRotate(node);
+        }
+
+        return node;
+    }
+
+    //Rotate Node down a level to the node to its left
+    public Node rightRotate(Node node)
+    {
+        Node pivot = node.left;
+        Node rightNode = pivot.right;
+
+        //Rotate
+        pivot.right = node;
+        node.left = rightNode;
+
+        //Set height values
+        node.height = Math.Max(Height(node.left), Height(node.right)) + 1;
+        pivot.height = Math.Max(Height(pivot.left), Height(pivot.right)) + 1;
+
+        return pivot;
+    }
+
+    //Rotate Node down a level to the node to its rigth
+    public Node leftRotate(Node node)
+    {
+        Node pivot = node.right;
+        Node leftNode = pivot.left;
+
+        //Rotate
+        pivot.left = node;
+        node.right = leftNode;
+
+        //Set height values
+        node.height = Math.Max(Height(node.left), Height(node.right)) + 1;
+        pivot.height = Math.Max(Height(pivot.left), Height(pivot.right)) + 1;
+
+        return pivot;
+    }
+
+    public int Height(Node node)
+    {
+        if (node == null)
+        {
+            return 0;
+        }
+        else
+        {
+            return node.height;
+        }
+    }
+
+    //Returns how unbalanced the node's branches are
+    public int Balance(Node node)
+    {
+        return Height(node.left) - Height(node.right);
+    }
+
+    public void PrintTree()
+    {
+        //Use Breadth First Search to Print Tree        
         Queue queue = new Queue();
+        queue.Enqueue(root);
 
-        queue.Enqueue(_source);
-        _visited[_source] = true;
-        _traversalOrder.Add(_source);
+        //Second queue used to print level
+        Queue levelQueue = new Queue();
+        queue.Enqueue(0);
 
+        int previousLevel = 0;
         while (queue.Count != 0)
         {
-            int vertex = (int)queue.Dequeue();
+            Node node = (Node)queue.Dequeue();
+            int level = (int)queue.Dequeue();
 
-            //Add all adjacent vertices to queue
-            List&ltint&gt adj = _graph.getAdjVertices(vertex);
-            for (int i = 0; i &lt adj.Count; i++)
+            if (level == previousLevel)
             {
-                if (_visited[adj[i]] == false)
-                {
-                    queue.Enqueue(adj[i]);
-                    _visited[adj[i]] = true;
-                    _traversalOrder.Add(adj[i]);
-                }                
+                Console.Write(node.data + ", ");
             }
-        }
+            else
+            {
+                previousLevel += 1;
+                Console.WriteLine("");
+                Console.Write(node.data + ", ");
+            }
+
+            if (node.left != null)
+            {
+                queue.Enqueue(node.left);
+                queue.Enqueue(level + 1);
+            }
+
+            if (node.right != null)
+            {
+                queue.Enqueue(node.right);
+                queue.Enqueue(level + 1);
+            }
+        }        
     }
 
-    public void PrintTraversal()
-    {
-        Console.Write("[");
-        for (int i = 0; i &lt _traversalOrder.Count; i++)
-        {
-            Console.Write(_traversalOrder[i] + ", ");
-        }
-        Console.Write("]");        
-    }
-    
     public static void Main(string[] args)
     {
-        //Graph From Image
-        int size = 27;
-        Graph graph = new Graph(size);
+        AVLTree tree = new AVLTree();
+        tree.Insert(19);
+        tree.Insert(24);
+        tree.Insert(12);
+        tree.Insert(11);
+        tree.Insert(17);
+        tree.Insert(-4);
+        tree.Insert(0);
+        tree.Insert(-21);
+        tree.Insert(18);
+        tree.Insert(14);
+        tree.Insert(7);
+        tree.Insert(-6);
+        tree.Insert(1);
+        tree.Insert(5);
+        tree.Insert(15);
+        tree.Insert(9);
+        tree.Insert(10);
+        tree.Insert(6);
+        tree.Insert(-9);
+        tree.Insert(-1);
+        tree.Insert(2);
+        tree.Insert(20);
+        tree.Insert(-19);
+        tree.Insert(4);
+        tree.Insert(-3);
 
-        //Add All Edges
-        graph.setEdge(0, 2, 10);
-        graph.setEdge(2, 0, 10);
-        graph.setEdge(0, 3, 10);
-        graph.setEdge(3, 0, 10);
-        graph.setEdge(0, 4, 15);
-        graph.setEdge(4, 0, 15);
-        graph.setEdge(1, 2, 5);
-        graph.setEdge(2, 1, 5);
-        graph.setEdge(2, 3, 20);
-        graph.setEdge(3, 2, 20);
-        graph.setEdge(2, 6, 10);
-        graph.setEdge(6, 2, 10);
-        graph.setEdge(2, 8, 35);
-        graph.setEdge(8, 2, 35);
-        graph.setEdge(4, 8, 45);
-        graph.setEdge(8, 4, 45);
-        graph.setEdge(4, 10, 40);
-        graph.setEdge(10, 4, 40);
-        graph.setEdge(6, 12, 15);
-        graph.setEdge(12, 6, 15);
-        graph.setEdge(7, 12, 10);
-        graph.setEdge(12, 7, 10);
-        graph.setEdge(10, 11, 10);
-        graph.setEdge(11, 10, 10);
-        graph.setEdge(5, 11, 5);
-        graph.setEdge(11, 5, 5);
-        graph.setEdge(10, 16, 20);
-        graph.setEdge(16, 10, 20);
-        graph.setEdge(8, 14, 30);
-        graph.setEdge(14, 8, 30);
-        graph.setEdge(7, 14, 5);
-        graph.setEdge(14, 7, 5);
-        graph.setEdge(7, 17, 25);
-        graph.setEdge(17, 7, 25);
-        graph.setEdge(17, 18, 5);
-        graph.setEdge(18, 17, 5);
-        graph.setEdge(14, 19, 5);
-        graph.setEdge(19, 14, 5);
-        graph.setEdge(16, 9, 25);
-        graph.setEdge(9, 16, 25);
-        graph.setEdge(15, 16, 15);
-        graph.setEdge(16, 15, 15);
-        graph.setEdge(16, 21, 20);
-        graph.setEdge(21, 16, 20);
-        graph.setEdge(15, 19, 10);
-        graph.setEdge(19, 15, 10);
-        graph.setEdge(18, 22, 5);
-        graph.setEdge(22, 18, 5);
-        graph.setEdge(19, 23, 10);
-        graph.setEdge(23, 19, 10);
-        graph.setEdge(20, 21, 15);
-        graph.setEdge(21, 20, 15);
-        graph.setEdge(20, 23, 20);
-        graph.setEdge(23, 20, 20);
-        graph.setEdge(21, 25, 25);
-        graph.setEdge(25, 21, 25);
-        graph.setEdge(25, 24, 20);
-        graph.setEdge(24, 25, 20);
-        graph.setEdge(22, 26, 35);
-        graph.setEdge(26, 22, 35);
-        graph.setEdge(23, 26, 25);
-        graph.setEdge(26, 23, 25);
-        graph.setEdge(24, 26, 20);
-        graph.setEdge(26, 24, 20);
-
-        int source = 0;
-        BFS bfs = new BFS(graph, source);
-        bfs.PrintTraversal();
+        tree.PrintTree();
         Console.Read();
-
-        //Output: [0, 2, 3, 4, 1, 6, 8, 10, 12, 14, 11, 16, 7, 19, 5, 9, 15, 21, 17, 23, 20, 25, 18, 26, 24, 22, ]
     }
 }</code></pre>
 					  </figure>
@@ -501,146 +477,100 @@ public class BFS
 			<div class="container-fluid section">
 			  <div class="row">
 				<div class="col-lg-12">
-				  <h1>Depth First Search</h1>
-				  <p class="lead">The Depth First Search Algorithm is a graph traversal algorithm that searchs all nodes down the tree before moving to the next node adjacent to the source. This is Pre Order Traversal
-				  and its output can be shown from the printTraversal() function in the class DFS. Output: [0, 2, 1, 3, 6, 12, 7, 14, 8, 4, 10, 11, 5, 16, 9, 15, 19, 23, 20, 21, 25, 24, 26, 22, 18, 17, ]				  
+				  <h1>Trie-Trees</h1>
+				  <p class="lead">Trie-Trees are efficient data structures for searching for items in time proportional to its key length (such as a string). Using a Binary Search Tree would require us to use
+				  M*Log(N) time where M is the length of the Key and N is the number of keys in the tree. Trie-Trees bring this value down to simply O(M), but takes up additional memory.
 				  </p>
 				</div>
 			  </div>
 			  <div class="row">
 				<div class="col-lg-12">
 					  <figure>
-					  <figcaption>Depth First Search Using C#</figcaption>
+					  <figcaption>Trie-Tree Using C#</figcaption>
 						<pre class="text-left code-scroll"><code class="language-clike" contenteditable spellcheck="false">using System;
 using System.Collections.Generic;
 
-public class DFS
+public class TrieNode
 {
-    Graph _graph;
-    int _source;
+    public Dictionary&ltchar, TrieNode&gt children = new Dictionary&ltchar, TrieNode&gt();
+    public bool wordEnd = false;
 
-    bool[] _visited;
-    public List&ltint&gt _traversalOrder = new List&ltint&gt();
-
-    public DFS(Graph graph, int source)
+    public TrieNode()
     {
-        _graph = graph;
-        _source = source;
-        _visited = new bool[graph.getSize()];
 
-        _visited[source] = true;
-        _traversalOrder.Add(source);
+    }
+}
 
-        List&ltint&gt adj = graph.getAdjVertices(source);
-        for (int i = 0; i &lt adj.Count; i++)
-        {
-            search(adj[i]);
-        }
+public class TrieTree
+{
+    public TrieNode root;
+
+    public TrieTree()
+    {
+        root = new TrieNode();
     }
 
-    private void search(int vertex)
+    public void Insert(string key)
     {
-        if (_visited[vertex] == false)
-        {
-            _visited[vertex] = true;
-            _traversalOrder.Add(vertex);
+        TrieNode node = root;
+        int length = key.Length;
 
-            List&ltint&gt adj = _graph.getAdjVertices(vertex);
-            for (int i = 0; i &lt adj.Count; i++)
+        for (int level = 0; level &lt length; level++)
+        {
+            if (!node.children.ContainsKey(key[level]))
             {
-                search(adj[i]);
+                TrieNode newNode = new TrieNode();
+                node.children.Add(key[level], newNode);
+                node = newNode;
+            }
+            else
+            {
+                node = node.children[key[level]];
             }
         }
+        node.wordEnd = true;
     }
 
-    public void PrintTraversal()
+    public bool Search(string key)
     {
-        Console.Write("[");
-        for (int i = 0; i &lt _traversalOrder.Count; i++)
+        TrieNode node = root;
+        int length = key.Length;
+        
+        for (int level = 0; level &lt length; level++)
         {
-            Console.Write(_traversalOrder[i] + ", ");
+            if (node.children.ContainsKey(key[level]))
+            {
+                node = node.children[key[level]];
+            }
+            else
+            {
+                return false;
+            }
         }
-        Console.Write("]");
+
+        return node.wordEnd;
     }
-    
+
     public static void Main(string[] args)
     {
-        //Graph From Image
-        int size = 27;
-        Graph graph = new Graph(size);
-
-        //Add All Edges
-        graph.setEdge(0, 2, 10);
-        graph.setEdge(2, 0, 10);
-        graph.setEdge(0, 3, 10);
-        graph.setEdge(3, 0, 10);
-        graph.setEdge(0, 4, 15);
-        graph.setEdge(4, 0, 15);
-        graph.setEdge(1, 2, 5);
-        graph.setEdge(2, 1, 5);
-        graph.setEdge(2, 3, 20);
-        graph.setEdge(3, 2, 20);
-        graph.setEdge(2, 6, 10);
-        graph.setEdge(6, 2, 10);
-        graph.setEdge(2, 8, 35);
-        graph.setEdge(8, 2, 35);
-        graph.setEdge(4, 8, 45);
-        graph.setEdge(8, 4, 45);
-        graph.setEdge(4, 10, 40);
-        graph.setEdge(10, 4, 40);
-        graph.setEdge(6, 12, 15);
-        graph.setEdge(12, 6, 15);
-        graph.setEdge(7, 12, 10);
-        graph.setEdge(12, 7, 10);
-        graph.setEdge(10, 11, 10);
-        graph.setEdge(11, 10, 10);
-        graph.setEdge(5, 11, 5);
-        graph.setEdge(11, 5, 5);
-        graph.setEdge(10, 16, 20);
-        graph.setEdge(16, 10, 20);
-        graph.setEdge(8, 14, 30);
-        graph.setEdge(14, 8, 30);
-        graph.setEdge(7, 14, 5);
-        graph.setEdge(14, 7, 5);
-        graph.setEdge(7, 17, 25);
-        graph.setEdge(17, 7, 25);
-        graph.setEdge(17, 18, 5);
-        graph.setEdge(18, 17, 5);
-        graph.setEdge(14, 19, 5);
-        graph.setEdge(19, 14, 5);
-        graph.setEdge(16, 9, 25);
-        graph.setEdge(9, 16, 25);
-        graph.setEdge(15, 16, 15);
-        graph.setEdge(16, 15, 15);
-        graph.setEdge(16, 21, 20);
-        graph.setEdge(21, 16, 20);
-        graph.setEdge(15, 19, 10);
-        graph.setEdge(19, 15, 10);
-        graph.setEdge(18, 22, 5);
-        graph.setEdge(22, 18, 5);
-        graph.setEdge(19, 23, 10);
-        graph.setEdge(23, 19, 10);
-        graph.setEdge(20, 21, 15);
-        graph.setEdge(21, 20, 15);
-        graph.setEdge(20, 23, 20);
-        graph.setEdge(23, 20, 20);
-        graph.setEdge(21, 25, 25);
-        graph.setEdge(25, 21, 25);
-        graph.setEdge(25, 24, 20);
-        graph.setEdge(24, 25, 20);
-        graph.setEdge(22, 26, 35);
-        graph.setEdge(26, 22, 35);
-        graph.setEdge(23, 26, 25);
-        graph.setEdge(26, 23, 25);
-        graph.setEdge(24, 26, 20);
-        graph.setEdge(26, 24, 20);
-
-        int source = 0;
-        DFS dfs = new DFS(graph, source);
-        dfs.PrintTraversal();
+        TrieTree tree = new TrieTree();
+        tree.Insert("test");
+        tree.Insert("testing");
+        tree.Insert("algo");
+        tree.Insert("a");
+        tree.Insert("algorithm");
+        tree.Insert("trie");        
+        
+        Console.WriteLine("Should be True, result: " + tree.Search("test"));
+        Console.WriteLine("Should be False, result: " + tree.Search("testi"));
+        Console.WriteLine("Should be True, result: " + tree.Search("a"));
+        Console.WriteLine("Should be False, result: " + tree.Search("tri"));
+        Console.WriteLine("Should be False, result: " + tree.Search("tria"));
+        Console.WriteLine("Should be True, result: " + tree.Search("trie"));
+        Console.WriteLine("Should be False, result: " + tree.Search("algorithms"));
+        Console.WriteLine("Should be True, result: " + tree.Search("testing"));
+        
         Console.Read();
-
-        //Output: [0, 2, 1, 3, 6, 12, 7, 14, 8, 4, 10, 11, 5, 16, 9, 15, 19, 23, 20, 21, 25, 24, 26, 22, 18, 17, ]
     }
 }</code></pre>
 					  </figure>
@@ -654,208 +584,16 @@ public class DFS
 			<div class="container-fluid section">
 			  <div class="row">
 				<div class="col-lg-12">
-				  <h1>Djikstra's Shortest Paths Algorithm</h1>
-				  <p class="lead">The Depth First Search Algorithm is a graph traversal algorithm that searchs all nodes down the tree before moving to the next node adjacent to the source. This is Pre Order Traversal
-				  and its output can be shown from the printTraversal() function in the class DFS. Output: [0, 2, 1, 3, 6, 12, 7, 14, 8, 4, 10, 11, 5, 16, 9, 15, 19, 23, 20, 21, 25, 24, 26, 22, 18, 17, ]				  
+				  <h1>Tree Traversal</h1>
+				  <p class="lead">There are 4 main types of tree traverals: Inorder, Preorder, Postorder, and Level Order. Inorder, Preorder, and Postorder are all performed using a Depth First Search approach while
+				  Level Order is performed using a Breadth First Search approach. You can perform Inorder, Preorder, and Postorder traversal in 3 steps with the traversal type dependant on where reading data occurs in the recursive function.
+				  <ul>
+					  <li>Preorder Traversal Steps: Read Root, Recursively call Preorder(left subtree), Recursively call Preorder(right subtree).</li>
+					  <li>Postorder Traversal Steps: Recursively call Preorder(left subtree), Recursively call Preorder(right subtree), Read Root.</li>
+					  <li>Inorder Traversal Steps: Recursively call Preorder(left subtree), Read Root, Recursively call Preorder(right subtree).</li>
+					  <li>Level Order Traversal Steps: Enqueue Root, Loop till Queue empty, Read Dequeued Node, Enqueue children</li>
+				  </ul>
 				  </p>
-				</div>
-			  </div>
-			  <div class="row">
-				<div class="col-lg-12">
-					  <figure>
-					  <figcaption>Djikstra's Shortest Paths Algorithm Using C#</figcaption>
-						<pre class="text-left code-scroll"><code class="language-clike" contenteditable spellcheck="false">using System;
-using System.Collections.Generic;
-using Priority_Queue;
-
-public class Djikstra
-{
-    Graph _graph;
-    int _source;
-
-    int _size;
-    bool[] _visited;
-    int[] _shortestDistance;
-    int[] _shortestPaths;
-    SimplePriorityQueue&ltint, int&gt _queue;
-
-    public Djikstra(Graph graph, int source)
-    {
-        _graph = graph;
-        _source = source;
-
-        _size = graph.getSize();
-        _visited = new bool[_size];
-        _shortestDistance = new int[_size];
-        _shortestPaths = new int[_size];
-
-        for (int i = 0; i &lt _size; i++)
-        {
-            _shortestDistance[i] = int.MaxValue;
-            _shortestPaths[i] = -1;
-        }
-
-        _queue = new SimplePriorityQueue&ltint, int&gt();
-        _queue.Enqueue(_source, 0);
-        _shortestDistance[_source] = 0;
-        _shortestPaths[_source] = -1;
-
-        //Use a Priority Queue for logerithmic O(Log(v)) insert and constant time get
-        //Can also use a normal Queue, but MinDistance() function will be O(v) 
-        while(_queue.Count != 0)
-        {
-            int vertex = MinDistanceVertex();
-            _visited[vertex] = true;
-
-            List&ltint&gt adj = _graph.getAdjVertices(vertex);
-            for (int i = 0; i &lt adj.Count; i++)
-            {
-
-                //If this node has not been visited and the current _shortestDistance entry is less than or equal to the current _shortestDistance entry
-                if (_visited[adj[i]] != true && _shortestDistance[adj[i]] &gt _shortestDistance[vertex] + graph.getEdge(vertex, adj[i]))
-                {
-                    _shortestDistance[adj[i]] = _shortestDistance[vertex] + graph.getEdge(vertex, adj[i]);
-                    _shortestPaths[adj[i]] = vertex;
-                    _queue.Enqueue(adj[i], _shortestDistance[adj[i]]);
-                }
-            }
-
-        }
-    }
-
-    //MinDistance() function using the priority queue (Fibonacci Heap)
-    public int MinDistanceVertex()
-    {
-        return _queue.Dequeue();
-    }
-
-    //Print the shortest path from the source to the input destination;
-    public void PrintShortestPath(int destination)
-    {
-        List&ltint&gt shortestPath = new List&ltint&gt();
-        shortestPath.Add(destination);
-
-        //Get the parent vertex of the destination vertex
-        int nextVertex = _shortestPaths[destination];
-        while (nextVertex != -1)
-        {
-            shortestPath.Add(nextVertex);
-            nextVertex = _shortestPaths[nextVertex];
-        }
-
-        Console.Write("[");
-        for (int i = shortestPath.Count - 1; i &gt -1 ; i--)
-        {
-            Console.Write(shortestPath[i]);
-            Console.Write("-&gt");
-        }
-        Console.WriteLine("]");
-        Console.Write("Shortest Distance = " + _shortestDistance[destination]);
-    }
-
-    //MinDistance() function can also loop through all vertices in no Priority_Queue available. This is O(V^2) however.
-    /*
-    public int MinDistanceVertex()
-    {
-        int minIndex = -1;
-        int minDistance = int.MaxValue;
-
-        for (int i = 0; i &lt _size; i++)
-        {
-            if (_visited[i] == false && _shortestDistance[i] &lt= minDistance)
-            {
-                minDistance = _shortestDistance[i];
-                minIndex = i;
-            }
-        }
-        return minIndex;
-    }
-    */
-
-    public static void Main(string[] args)
-    {
-        //Graph From Image
-        int size = 27;
-        Graph graph = new Graph(size);
-
-        //Add All Edges
-        graph.setEdge(0, 2, 10);
-        graph.setEdge(2, 0, 10);
-        graph.setEdge(0, 3, 10);
-        graph.setEdge(3, 0, 10);
-        graph.setEdge(0, 4, 15);
-        graph.setEdge(4, 0, 15);
-        graph.setEdge(1, 2, 5);
-        graph.setEdge(2, 1, 5);
-        graph.setEdge(2, 3, 20);
-        graph.setEdge(3, 2, 20);
-        graph.setEdge(2, 6, 10);
-        graph.setEdge(6, 2, 10);
-        graph.setEdge(2, 8, 35);
-        graph.setEdge(8, 2, 35);
-        graph.setEdge(4, 8, 45);
-        graph.setEdge(8, 4, 45);
-        graph.setEdge(4, 10, 40);
-        graph.setEdge(10, 4, 40);
-        graph.setEdge(6, 12, 15);
-        graph.setEdge(12, 6, 15);
-        graph.setEdge(7, 12, 10);
-        graph.setEdge(12, 7, 10);
-        graph.setEdge(10, 11, 10);
-        graph.setEdge(11, 10, 10);
-        graph.setEdge(5, 11, 5);
-        graph.setEdge(11, 5, 5);
-        graph.setEdge(10, 16, 20);
-        graph.setEdge(16, 10, 20);
-        graph.setEdge(8, 14, 30);
-        graph.setEdge(14, 8, 30);
-        graph.setEdge(7, 14, 5);
-        graph.setEdge(14, 7, 5);
-        graph.setEdge(7, 17, 25);
-        graph.setEdge(17, 7, 25);
-        graph.setEdge(17, 18, 5);
-        graph.setEdge(18, 17, 5);
-        graph.setEdge(14, 19, 5);
-        graph.setEdge(19, 14, 5);
-        graph.setEdge(16, 9, 25);
-        graph.setEdge(9, 16, 25);
-        graph.setEdge(15, 16, 15);
-        graph.setEdge(16, 15, 15);
-        graph.setEdge(16, 21, 20);
-        graph.setEdge(21, 16, 20);
-        graph.setEdge(15, 19, 10);
-        graph.setEdge(19, 15, 10);
-        graph.setEdge(18, 22, 5);
-        graph.setEdge(22, 18, 5);
-        graph.setEdge(19, 23, 10);
-        graph.setEdge(23, 19, 10);
-        graph.setEdge(20, 21, 15);
-        graph.setEdge(21, 20, 15);
-        graph.setEdge(20, 23, 20);
-        graph.setEdge(23, 20, 20);
-        graph.setEdge(21, 25, 25);
-        graph.setEdge(25, 21, 25);
-        graph.setEdge(25, 24, 20);
-        graph.setEdge(24, 25, 20);
-        graph.setEdge(22, 26, 35);
-        graph.setEdge(26, 22, 35);
-        graph.setEdge(23, 26, 25);
-        graph.setEdge(26, 23, 25);
-        graph.setEdge(24, 26, 20);
-        graph.setEdge(26, 24, 20);
-
-        int source = 0;
-        int destination = 26;
-        Djikstra djikstra = new Djikstra(graph, source);
-        djikstra.PrintShortestPath(destination);
-        Console.Read();
-
-        //Output: 
-        //[0-&gt2-&gt6-&gt12-&gt7-&gt14-&gt19-&gt23-&gt26-&gt]
-        //Shortest Distance = 90
-    }
-}</code></pre>
-					  </figure>
 				</div>
 			  </div>
 			</div>

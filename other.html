@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Bare - Start Bootstrap Template</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	
+	<!-- Custom styles for this template -->
+    <link href="css/simple-sidebar.css" rel="stylesheet">
+	
+	<!-- Prism Code Stylesheet -->
+	<link href="prism/prism.css" rel="stylesheet" />
+	
+	<!-- Custom styles -->
+    <link href="css/custom.css" rel="stylesheet">
+
+  </head>
+
+  <body>
+
+    <!-- Navigation -->
+    <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark static-top">
+      <div class="container">
+        <a class="navbar-brand" href="index.html">Algorithm Site</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="about.html">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="contact.html">Contact</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+	
+	<div id="wrapper" class="toggled">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li>
+                    <a href="sorting.html">Sorting</a>
+                </li>
+                <li>
+                    <a href="hashtables.html">Hash Tables</a>
+                </li>
+                <li>
+                    <a href="trees.html">Trees</a>
+                </li>
+                <li>
+                    <a href="graphs.html">Graphs</a>
+                </li>
+                <li>
+                    <a href="other.html">Other Algorithms</a>
+                </li>
+                <li>
+                    <a href="mathematics.html">Mathematics</a>
+                </li>
+                <li>
+                    <a href="operatingsystems.html">Operating Systems</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="jumbotron text-center">
+					<h1 class="display-2"><b>Other Algorithms</b></h1>
+					<p>
+					This page will cover a variety of other algorithms and problems such as NP-Complete problems
+					</p>
+				</div>
+            </div>        
+		
+			<!-- More Page Content -->
+			<div class="container-fluid section">
+			  <div class="row">
+				<div class="col-lg-12">
+				  <h1>QuickSort</h1>
+				  <p class="lead">The Quicksort algorithm is an O(NLog(N)), in place, and not stable sorting algorithm with its default implementation. QuickSort partitions an array or list into 2 sections
+				  and correctly places a pivot in the sorted array. The partition is a O(N) algorithm which is recursively called on the left partition and the right partition. This equates to log n times 
+				  calls on average in QuickSort's default implementation. 
+				  </p>
+				</div>
+			  </div>
+			  <div class="row">
+				<div class="col-lg-12">
+					  <figure>
+					  <figcaption>QuickSort Using C#</figcaption>
+						<pre class="text-left code-scroll"><code class="language-clike" contenteditable spellcheck="false">using System;
+
+namespace Algorithms
+{
+    public class QuickSort
+    {
+        /*QuickSort is an O(NLog(N)) divide and conquer sorting algorithm that performs and average of Log(N)
+		steps of its partition function which is O(N).
+        public static void quicksort(int[] array)
+        {
+            int low = 0;
+            int high = array.Length - 1;
+            quicksort(array, low, high);
+        }
+
+        private static void quicksort(int[] array, int low, int high)
+        {
+            if (low &lt high)
+            {
+                int pivotIndex = partition(array, low, high);
+                quicksort(array, low, pivotIndex - 1);
+                quicksort(array, pivotIndex, high);
+            }
+        }
+
+        //Key will be the high value for this partition function. Partition is a linear O(N) time algorithm
+        private static int partition(int[] array, int low, int high)
+        {
+            int left = low;
+            int right = high;
+            int temp;
+
+            //Start by choosing the pivot to be the last value in the array and decrement the right pointer
+            int pivot = array[right];
+            right--;
+
+            while (left &lt= right)
+            {
+
+                //Increment low if the low index value is greater than the pivot index value
+                //It is already correctly partitioned. Swap and decrement the pivot otherwise.
+                if (array[left] &lt= pivot)
+                {
+                    left++;
+                }
+                else
+                {
+                    temp = array[left];
+                    array[left] = array[right];
+                    array[right] = temp;
+
+                    right--;
+                }
+            }
+
+            //Swap pivot to the right + 1 index at the end of the loop
+            temp = array[right + 1];
+            array[right + 1] = array[high];
+            array[high] = temp;
+
+            return right + 1;
+        }
+
+        public static void printArray(int[] array)
+        {
+            Console.Write("[");
+            for (int i = 0; i &lt array.Length - 1; i++)
+            {
+                Console.Write(array[i] + ", ");
+            }
+            Console.Write(array[array.Length - 1]);
+            Console.Write("]");
+
+            //Console.Read() holds console open until closed
+            Console.Read();
+        }
+
+        public static void Main(string[] args)
+        {
+            int[] sort = { 2, 5, 8, 3, 8, 34, 4, 45, 6, 45, 23, 45, 6, 23, 4, 2, 2, 44 };
+            quicksort(sort);
+            printArray(sort);
+        }
+    }
+}
+</code></pre>
+					  </figure>
+				</div>
+			  </div>
+			</div>
+			
+			<br/>
+			
+			<!-- More Page Content -->
+			<div class="container-fluid section">
+			  <div class="row">
+				<div class="col-lg-12">
+				  <h1>MergeSort</h1>
+				  <p class="lead">The MergeSort algorithm is an O(NLog(N)), not in place, stable sorting algorithm with its default implementation. MergeSort recursively sorts a list by dividing the array up into
+				  smaller and smaller chunks and using a O(N) merge algorithm to join them back together in sorted order. This requires O(N) extra space its MergeSort's default implementation which means the algorithm
+				  is not in place.
+				  </p>
+				</div>
+			  </div>
+			  <div class="row">
+				<div class="col-lg-12">
+					  <figure>
+					  <figcaption>MergeSort Using C#</figcaption>
+						<pre class="text-left code-scroll"><code class="language-clike" contenteditable spellcheck="false">using System;
+
+namespace Algorithms
+{
+    public class MergeSort
+    {
+        public static void mergesort(int[] array)
+        {
+            int low = 0;
+            int high = array.Length - 1;
+
+            mergesort(array, low, high);
+        }
+
+		//MergeSort recursively divides the array into 2 sides and merges them together recursively at the end.
+        private static void mergesort(int[] array, int low, int high)
+        {
+            if (low &lt high)
+            {
+                int middle = low + (high - low) / 2;
+
+                mergesort(array, low, middle);
+                mergesort(array, middle + 1, high);
+
+                merge(array, low, high, middle);
+            }
+        }
+
+        private static void merge(int[] array, int low, int high, int middle)
+        {
+            int leftSize = middle - low + 1;
+            int rightSize = high - middle;
+
+            int[] leftArray = new int[leftSize];
+            int[] rightArray = new int[rightSize];
+
+            //Place data in these temporary arrays
+            for (int index = 0; index &lt leftSize; index++)
+            {
+                leftArray[index] = array[low + index];
+            }
+
+            for (int index = 0; index &lt rightSize; index++)
+            {
+                rightArray[index] = array[middle + 1 + index];
+            }
+
+            int i = 0;
+            int j = 0;
+
+            int k = low;
+            while (i &lt leftSize && j &lt rightSize)
+            {
+                if (leftArray[i] &lt= rightArray[j])
+                {
+                    array[k] = leftArray[i];
+                    i++;
+                }
+                else
+                {
+                    array[k] = rightArray[j];
+                    j++;
+                }
+                k++;
+            }
+
+            //Add the remaining elements to the input array
+            while (i &lt leftSize)
+            {
+                array[k] = leftArray[i];
+                i++;
+                k++;
+            }
+
+            while (j &lt rightSize)
+            {
+                array[k] = rightArray[j];
+                j++;
+                k++;
+            }
+        }
+
+        public static void printArray(int[] array)
+        {
+            Console.Write("[");
+            for (int i = 0; i &lt array.Length - 1; i++)
+            {
+                Console.Write(array[i] + ", ");
+            }
+            Console.Write(array[array.Length - 1]);
+            Console.Write("]");
+
+            //Console.Read() holds console open until closed
+            Console.Read();
+        }
+        
+        public static void Main(string[] args)
+        {
+            int[] sort = { 2, 5, 8, 3, 8, 34, 4, 45, 6, 45, 23, 45, 6, 23, 4, 2, 2, 44 };
+            mergesort(sort);
+            printArray(sort);
+        }
+    }
+}</code></pre>
+					  </figure>
+				</div>
+			  </div>
+			</div>
+			
+		</div>
+        <!-- /#page-content-wrapper -->
+
+	</div>	
+	<!-- /#wrapper -->	
+		
+    <!-- Bootstrap core JavaScript -->
+    <script src="jquery/jquery.min.js"></script>
+    <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+
+	<!-- Prism Javascript -->
+	<script src="prism/prism.js"></script>
+	
+  </body>
+
+</html>

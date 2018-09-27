@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+/*
 public class Node<T>
 {
     public T data;
@@ -24,6 +24,7 @@ public class Tree<T>
 
 public class TestTree
 {
+    
     public static void Main(string[] args)
     {
         Tree<int> tree = new Tree<int>(10);
@@ -37,4 +38,6 @@ public class TestTree
         tree.root.nodes[3].nodes.Add(new Node<int>(17));
         tree.root.nodes[3].nodes[0].nodes.Add(new Node<int>(1));
     }
+    
 }
+*/
