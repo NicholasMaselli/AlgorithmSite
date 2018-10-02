@@ -83,75 +83,12 @@
         <div id="page-content-wrapper">
             <div class="container-fluid">
                 <div class="jumbotron text-center">
-					<h1 class="display-2"><b>Mathematics</b></h1>
+					<h1 class="display-2"><b>Contact</b></h1>
 					<p>
-					This page will go over combinatorics and probability.
+					I am available to contact at: <a href="https://www.linkedin.com/in/nicholasmaselli/">https://www.linkedin.com/in/nicholasmaselli/</a>
 					</p>
 				</div>
-            </div>        
-		
-			<!-- More Page Content -->
-			<div class="container-fluid section">
-			  <div class="row">
-				<div class="col-lg-12">
-				  <h1>N Choose K Problems</h1>
-				  <p class="lead">N choose K problems arise when you have a list of N items and can only choose K of them. (n k). An easy method of computing this value is shown below.
-				  A more thorough mathematical explanation can be found on <a href="https://en.wikipedia.org/wiki/Binomial_coefficient#Multiplicative_formula">Wikipedia</a>
-				  </p>
-				</div>
-			  </div>
-			<div class="row">
-				<div class="col-lg-12">
-					  <figure>
-					  <figcaption>N Choose K Efficient Algorithm</figcaption>
-						<pre class="text-left code-scroll"><code class="language-clike" contenteditable spellcheck="false">using System;
-
-public class NChooseK
-{
-    public float N;
-    public float K;
-    public float result;
-
-    public NChooseK(int n, int k)
-    {
-
-        N = (float) n;
-        K = (float) k;
-
-        //Use the Multiplicative formula
-        result = 1.0f;
-        for (int i = 1; i &lt= K; i++)
-        {
-            result = result * ((N + 1 - i) / i); //Can also use ((N - (K - i)) / i);
-        }
-    }
-}</code></pre>
-					  </figure>
-				</div>
-			  </div>
-			</div>
-			
-			<br/>
-			
-			<!-- More Page Content -->
-			<div class="container-fluid section">
-			  <div class="row">
-				<div class="col-lg-12">
-				  <h1>Other Combinatorics Problems</h1>
-				  <p class="lead">Here is a list of combinatorics problems and solutions from <a href="https://en.wikipedia.org/wiki/Binomial_coefficient#Multiplicative_formula">Wikipedia</a>
-				  <ul>
-					<li>There are (n k) ways to choose k elements from</li>
-					<li>There are (n+k-1 k) ways to choose k elements form a set of n elements if repetitions are allowed</li>
-					<li>There are (n+k k) strings containing k ones and n zeros</li>
-					<li>There are (n+1 k) strings consisting of k ones and n zeros such that no two ones are adjacent</li>
-					<li>The Catalan numbers are (1/(n+1))*(2n n)</li>
-					<li>The binomial distribution in statistics is (n k)*(p^k)*((1-p)^(n-k))</li>
-				  </ul>
-				  </p>
-				</div>
-			  </div>
-			</div>
-						
+            </div>						
 		</div>
         <!-- /#page-content-wrapper -->
 

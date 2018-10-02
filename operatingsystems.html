@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Bare - Start Bootstrap Template</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	
+	<!-- Custom styles for this template -->
+    <link href="css/simple-sidebar.css" rel="stylesheet">
+	
+	<!-- Prism Code Stylesheet -->
+	<link href="prism/prism.css" rel="stylesheet" />
+	
+	<!-- Custom styles -->
+    <link href="css/custom.css" rel="stylesheet">
+
+  </head>
+
+  <body>
+
+    <!-- Navigation -->
+    <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark static-top">
+      <div class="container">
+        <a class="navbar-brand" href="index.html">Algorithm Site</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="about.html">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="contact.html">Contact</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+	
+	<div id="wrapper" class="toggled">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li>
+                    <a href="sorting.html">Sorting</a>
+                </li>
+                <li>
+                    <a href="hashtables.html">Hash Tables</a>
+                </li>
+                <li>
+                    <a href="trees.html">Trees</a>
+                </li>
+                <li>
+                    <a href="graphs.html">Graphs</a>
+                </li>
+                <li>
+                    <a href="other.html">Other Algorithms</a>
+                </li>
+                <li>
+                    <a href="mathematics.html">Mathematics</a>
+                </li>
+                <li>
+                    <a href="operatingsystems.html">Operating Systems</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="jumbotron text-center">
+					<h1 class="display-2"><b>Operating Systems</b></h1>
+					<p>
+					This page will go over Operating Systems including threads, processes, concurrency, locks, mutexes, semaphores, and monitors. 
+					</p>
+				</div>
+            </div>        
+		
+			<!-- More Page Content -->
+			<div class="container-fluid section">
+			  <div class="row">
+				<div class="col-lg-12">
+				  <h1>Threads, Processes, and Concurrency</h1>
+				  <p class="lead">A thread is a path of execution within a process. A process is an active entity that is provided, supported, and managed by the operating system with the purpose of providing an enviornment to execute a program. Concurrency is the tendency for things to happen at the same time in a system.
+				  In order for an operating system to support concurrency, it must provide multiple threads of control. A process can be in 3 states:
+				  <ul>
+					<li>Blocked - waiting for the system to give it some input or gain control of some resource</li>
+					<li>Ready - waiting for the system to give the process its turn to execute</li>
+					<li>Running - a process that is currently using the CPU</li>
+				  </ul>
+				  Multitasking is a concept that allows a system to manager multiple processes which each have multiple threads, however a single thread of control is executing at once among all the processors.
+				  This provides the illusion of concurrency. Multiprocessing however, is a concept that allows a system to manager multiple processors which allows for true concurrent execution.
+				  </p>
+				</div>
+			  </div>
+			</div>
+			
+			<br/>
+			
+			<!-- More Page Content -->
+			<div class="container-fluid section">
+			  <div class="row">
+				<div class="col-lg-12">
+				  <h1>Locks, Mutexes, Semaphores, and Monitors</h1>
+				  <p class="lead">A lock occurs when a single thread requires a resource and does not want to share the resource until the thread completes. A Mutex is a mutual exclusion object that can be locked by threads
+				  so that the threads can take turns utilizing the mutex. A mutex is locked by a thread until that thread unlocks the mutex. A Semaphore is a variable or abstract data type that is used to control access to
+				  a common resource by multiple processes in a concurrent system. An example of this is a semaphore would be used to split a 4kb buffer into 4, 1kb buffers for 4 different processes to utilize concurrently. Monitors 
+				  are used to achieve process synchronization. A montior is a collection of variables and procedures that are combined together. Processes running outside the monitor cannot access internal variables but can call
+				  monitor procedures. Finally, only 1 process can execute code inside a monitor at a time. Two operations that can be performed on the condition variables of a monitor are "wait" which blocks the process and 
+				  "signal" which runs a blocked process on the blocked queue for that condition variable.
+				  </p>
+				</div>
+			  </div>
+			</div>
+			
+			<br/>
+			
+			<!-- More Page Content -->
+			<div class="container-fluid section">
+			  <div class="row">
+				<div class="col-lg-12">
+				  <h1>Scheduling and Context Switching</h1>
+				  <p class="lead">Scheduling is concept of selecting which processes to execute in which order. Algorithms for scheduling processes include simple queues, a round robin system, a priority system, and more.
+				  An example is windows where each thread is given a priority while each process scheduling class is also given a priority. Context Switching is the procedure of storing the state of an active process for the CPU
+				  when it has to start executing a new process. Context Switching is easy between threads and requires more overhead between processes which require more overhead.
+				  </p>
+				</div>
+			  </div>
+			</div>
+			
+			<br/>
+			
+			<!-- More Page Content -->
+			<div class="container-fluid section">
+			  <div class="row">
+				<div class="col-lg-12">
+				  <h1>Deadlocks, Livelocks, and Starvation</h1>
+				  <p class="lead">
+				  <ul>
+					  <li>Deadlocks - When 2 or more processes cannot procede because they are both waiting for the other to give them a resource or release a lock. Difficult to detect beforehand due to the halting problem.</li>	
+					  <li>Livelocks - When processes are consistently changing state while doing no work. This usually occurs when the processes are trying to allow another process to do work in order to avoid a deadlock.</li>
+					  <li>Starvation - Starvation occurs when a thread is never allowed to process due to greedy threads with higher priority before it.</li>
+				  </ul>
+				  </p>
+				</div>
+			  </div>
+			</div>
+						
+		</div>
+        <!-- /#page-content-wrapper -->
+
+	</div>	
+	<!-- /#wrapper -->	
+		
+    <!-- Bootstrap core JavaScript -->
+    <script src="jquery/jquery.min.js"></script>
+    <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+
+	<!-- Prism Javascript -->
+	<script src="prism/prism.js"></script>
+	
+  </body>
+
+</html>
