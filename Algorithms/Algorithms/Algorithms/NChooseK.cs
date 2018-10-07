@@ -1,6 +1,6 @@
 ﻿using System;
 
-public class NChooseK
+public class SimpleGraph
 {
     public float N;
     public float K;
